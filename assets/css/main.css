@@ -1,0 +1,12 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+#__nuxt {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+}

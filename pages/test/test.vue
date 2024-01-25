@@ -9,4 +9,5 @@ const counter = ref(0)
     <span>{{ counter }}</span>
     <button @click="counter++">+</button>
     <span>Ahoi</span>
+    <test :counter="counter"></test>
 </template>
