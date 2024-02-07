@@ -1,13 +1,8 @@
 <template>
-    <ElContainer class="default-layout">
-        <Header></Header>
-        <ElMain>
-            <slot></slot>
-        </ElMain>
-    </ElContainer>
+  <ElContainer class="flex-col">
+    <Header />
+    <ElMain>
+      <slot></slot>
+    </ElMain>
+  </ElContainer>
 </template>
-
-<style scoped>
-.default-layout {}
-</style>
-

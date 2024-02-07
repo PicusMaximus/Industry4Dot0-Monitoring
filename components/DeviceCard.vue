@@ -1,14 +1,11 @@
-<script setup lang="ts">
-</script>
-
 <template>
-    <ElCard class="box-card" padd >
-        <template #header>
-            <div class="card-header">
-                <span>Gerät 1</span>
-                <ElButton type="warning" plain>Status abfragen</ElButton>
-            </div>
-        </template>
-        <div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>
-    </ElCard>
+  <ElCard class="box-card">
+    <template #header>
+      <div class="flex justify-between">
+        <span>Gerät 1</span>
+        <ElButton type="warning" plain>Status abfragen</ElButton>
+      </div>
+    </template>
+    <div v-for="i in 4" :key="i">{{ "List item " + i }}</div>
+  </ElCard>
 </template>
