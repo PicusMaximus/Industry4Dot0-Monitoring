@@ -14,9 +14,8 @@
     position: absolute;
     inset: 0;
 
-    display: flex;
-    justify-content: stretch;
-    align-items: stretch;
+    display: grid;
+    grid-auto-columns: auto;
   }
 }
 

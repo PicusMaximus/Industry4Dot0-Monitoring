@@ -1,7 +1,7 @@
 <template>
-  <ElContainer class="flex-col">
+  <div class="flex flex-col">
     <ElMain>
       <slot></slot>
     </ElMain>
-  </ElContainer>
+  </div>
 </template>
