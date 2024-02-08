@@ -1,5 +1,4 @@
-export interface Device {
-    ipAdress: string;
+interface Device {
+    id: string;
     name: string;
-    status: string
 }
