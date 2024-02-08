@@ -7,8 +7,6 @@ useSeoMeta({
   robots: "noindex, nofollow",
 });
 
-
-
 const geraeteItems = ref<Device[]>([
   { ipAdress: '0.0.0.0', name: 'Gerät 1', status: 'Aktiv' },
   { ipAdress: '1.0.0.0', name: 'Gerät 2', status: 'Inaktiv' },

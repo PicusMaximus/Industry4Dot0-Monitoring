@@ -1,7 +1,10 @@
+import { devices } from "~/server/database/schemas/device";
+import { db } from "../../database/database";
+
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const deviceId = body.id;
     const deviceName = body.name;
-    console.log(deviceId, deviceName)
-    return 200
+
+    return db.select().from(devices)
   })

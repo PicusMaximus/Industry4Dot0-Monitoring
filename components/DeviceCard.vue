@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import type { Device } from '~/interfaces/Device';
 
-import  { type Device } from '../interfaces/Device';
 
 interface DeviceCardProps {
   geraet: Device
@@ -22,8 +22,8 @@ const { geraet } = defineProps<DeviceCardProps>()
       IP-Adresse: {{ geraet.ipAdress }}
     </div>
     <el-divider />
-    <div>
+    <!--div>
       Status: {{ geraet.status }}
-    </div>
+    </div-->
   </ElCard>
 </template>
