@@ -1,0 +1,25 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "element-plus/dist/index.css";
+@import "tailwindcss/utilities";
+
+@layer base {
+  *,
+  *::after,
+  *::before {
+    box-sizing: border-box;
+  }
+
+  #__nuxt {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+  }
+}
+
+.el-button + .el-button {
+  margin-left: 0;
+}

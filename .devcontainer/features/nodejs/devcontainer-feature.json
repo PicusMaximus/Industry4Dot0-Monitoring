@@ -1,0 +1,68 @@
+{
+  "id": "nodejs",
+  "version": "1.0.0",
+  "name": "TiamoP23 NodeJS",
+  "options": {
+    "version": {
+      "type": "string",
+      "proposals": ["lts", "latest", "none", "18", "16", "14"],
+      "default": "lts",
+      "description": "Select or enter a Node.js version to install"
+    },
+    "nodeGypDependencies": {
+      "type": "boolean",
+      "default": true,
+      "description": "Install dependencies to compile native node modules (node-gyp)?"
+    },
+    "nvmInstallPath": {
+      "type": "string",
+      "default": "/usr/local/share/nvm",
+      "description": "The path where NVM will be installed."
+    },
+    "nvmVersion": {
+      "type": "string",
+      "proposals": ["latest", "0.39"],
+      "default": "latest",
+      "description": "Version of NVM to install."
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "christian-kohler.npm-intellisense",
+        "dbaeumer.vscode-eslint"
+      ],
+      "settings": {
+        "explorer.fileNesting.patterns": {
+          "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml",
+          "tsconfig.json": "tsconfig.*.json",
+          "*.ts": "${capture}.js, ${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.ts",
+          "*.tsx": "${capture}.js, ${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.tsx, ${capture}.stories.tsx",
+          "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.js",
+          "*.jsx": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.jsx, ${capture}.stories.jsx"
+        }
+      }
+    }
+  },
+  "postCreateCommand": "sudo chown -R ${USER}:${USER} /.pnpm-store ${containerWorkspaceFolder}/node_modules && pnpm config set store-dir /.pnpm-store && pnpm install --frozen-lockfile",
+  "mounts": [
+    {
+      "source": "node_modules-${devcontainerId}",
+      "target": "${containerWorkspaceFolder}/node_modules",
+      "type": "volume"
+    },
+    {
+      "source": "pnpm-store",
+      "target": "/.pnpm-store",
+      "type": "volume"
+    }
+  ],
+  "dependsOn": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "${VERSION}",
+      "nodeGypDependencies": "${NODE_GYP_DEPENDENCIES}",
+      "nvmInstallPath": "${NVM_INSTALL_PATH}",
+      "nvmVersion": "${NVM_VERSION}"
+    }
+  }
+}
