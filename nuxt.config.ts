@@ -9,4 +9,9 @@ export default defineNuxtConfig({
   elementPlus: {
     importStyle: false,
   },
+  nitro: {
+    experimental: {
+      openAPI: true,
+    },
+  },
 });
