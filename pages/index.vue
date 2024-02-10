@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Device } from '../interfaces/Device';
+import { type Device } from "../interfaces/Device";
 
 useSeoMeta({
   title: "Steuerung",
@@ -8,12 +8,11 @@ useSeoMeta({
 });
 
 const geraeteItems = ref<Device[]>([
-  { ipAdress: '0.0.0.0', name: 'Gerät 1', status: 'Aktiv' },
-  { ipAdress: '1.0.0.0', name: 'Gerät 2', status: 'Inaktiv' },
-  { ipAdress: '2.0.0.0', name: 'Gerät 3', status: 'Aktiv' },
-  { ipAdress: '3.0.0.0', name: 'Gerät 4', status: 'Idle', }
+  { ipAdress: "0.0.0.0", name: "Gerät 1", status: "Aktiv" },
+  { ipAdress: "1.0.0.0", name: "Gerät 2", status: "Inaktiv" },
+  { ipAdress: "2.0.0.0", name: "Gerät 3", status: "Aktiv" },
+  { ipAdress: "3.0.0.0", name: "Gerät 4", status: "Idle" },
 ]);
-
 </script>
 
 <template>
@@ -24,7 +23,11 @@ const geraeteItems = ref<Device[]>([
       <ElButton type="danger">Notstop</ElButton>
     </div>
     <div class="grid gap-1 grid-cols-auto-fill-md">
-      <DeviceCard v-for="(geraet, index) in geraeteItems" :key="index" :geraet="geraet" />
+      <DeviceCard
+        v-for="(geraet, index) in geraeteItems"
+        :key="index"
+        :geraet="geraet"
+      />
     </div>
   </div>
 </template>

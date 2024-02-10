@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { Device } from '~/interfaces/Device';
-
+import type { Device } from "~/interfaces/Device";
 
 interface DeviceCardProps {
-  geraet: Device
+  geraet: Device;
 }
 
-const { geraet } = defineProps<DeviceCardProps>()
-
+const { geraet } = defineProps<DeviceCardProps>();
 </script>
 
 <template>
@@ -18,9 +16,7 @@ const { geraet } = defineProps<DeviceCardProps>()
         <ElButton type="warning" plain>Status abfragen</ElButton>
       </div>
     </template>
-    <div>
-      IP-Adresse: {{ geraet.ipAdress }}
-    </div>
+    <div>IP-Adresse: {{ geraet.ipAdress }}</div>
     <el-divider />
     <!--div>
       Status: {{ geraet.status }}

@@ -1,4 +1,4 @@
-interface Job {
-    id: string;
-    name: string;
+export interface Job {
+  id: string;
+  name: string;
 }
