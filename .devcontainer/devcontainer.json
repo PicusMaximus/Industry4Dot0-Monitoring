@@ -4,13 +4,30 @@
   "name": "Industry4Dot0-Monitoring",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
   "features": {
-    "ghcr.io/tiamop23/devcontainer-features/common": "latest",
-    "./features/nodejs": "20",
-    "ghcr.io/tiamop23/devcontainer-features/vue": {}
+    "ghcr.io/devcontainers/features/node:1": "20"
   },
+  "postStartCommand": "npm ci",
+  "portsAttributes": {
+    "3000": {
+      "label": "Nuxt",
+      "onAutoForward": "notify"
+    },
+    "4983": {
+      "label": "Drizzle Studio",
+      "onAutoForward": "silent"
+    }
+  },
+  "forwardPorts": [3000, 4983],
   "customizations": {
     "vscode": {
-      "extensions": ["bradlc.vscode-tailwindcss"]
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "christian-kohler.npm-intellisense",
+        "esbenp.prettier-vscode",
+        "Vue.volar",
+        "Vue.vscode-typescript-vue-plugin",
+        "cpreston321.nuxt-vscode"
+      ]
     }
   }
 }

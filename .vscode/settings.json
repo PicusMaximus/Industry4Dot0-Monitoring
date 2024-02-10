@@ -1,0 +1,22 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.addMissingImports": "explicit",
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.js",
+    "*.jsx": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.jsx, ${capture}.stories.jsx",
+    "*.ts": "${capture}.js, ${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.ts",
+    "*.tsx": "${capture}.js, ${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.tsx, ${capture}.stories.tsx",
+    ".env": ".env.local, .env.*, .env.*.local",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml",
+    "tsconfig.json": "tsconfig.*.json"
+  },
+  "vue.complete.casing.props": "autoCamel",
+  "vue.complete.casing.tags": "autoPascal"
+}
