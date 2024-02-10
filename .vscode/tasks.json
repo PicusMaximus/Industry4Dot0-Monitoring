@@ -6,6 +6,11 @@
       "group": "build",
       "type": "npm",
       "script": "dev",
+      "options": {
+        "env": {
+          "EDITOR": "code"
+        }
+      },
       "runOptions": {
         "runOn": "folderOpen"
       }
