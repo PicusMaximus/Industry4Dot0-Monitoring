@@ -7,11 +7,14 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "db:generate": "drizzle-kit generate:sqlite",
+    "db:studio": "drizzle-kit studio"
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.7",
     "@nuxtjs/tailwindcss": "^6.11.3",
+    "@types/better-sqlite3": "^7.6.9",
     "@vueuse/nuxt": "^10.7.2",
     "drizzle-kit": "^0.20.14",
     "nuxt": "^3.9.3",
