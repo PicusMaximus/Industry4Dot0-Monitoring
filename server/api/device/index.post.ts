@@ -1,9 +1,12 @@
-import { Device } from "~/interfaces/Device";
+import {
+  InsertDevice,
+  insertDeviceSchema,
+} from "~/server/database/schemas/device";
 
 export default defineEventHandler<{
-  body: Device;
+  body: InsertDevice;
 }>(async (event) => {
-  const device = await readBody(event);
+  const newDevice = await readValidatedBody(event, insertDeviceSchema.parse);
 
-  return null;
+  await db.insert(devices).values([newDevice]);
 });

@@ -22,7 +22,7 @@ const { geraet } = defineProps<DeviceCardProps>();
         </ElButton>
       </div>
     </template>
-    <div>IP-Adresse: {{ geraet.ipAdress }}</div>
+    <div>IP-Adresse: {{ geraet.ip }}</div>
     <el-divider />
     <!--div>
       Status: {{ geraet.status }}

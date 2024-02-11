@@ -1,3 +1,3 @@
 export default defineEventHandler(async (event) => {
-  return db.select().from(events);
+  console.log("Start");
 });

@@ -27,6 +27,9 @@
       "script": "db:studio",
       "runOptions": {
         "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "silent"
       }
     }
   ]
