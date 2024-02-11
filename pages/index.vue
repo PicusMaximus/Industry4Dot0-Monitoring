@@ -33,9 +33,9 @@ const emergencyStop = async () => {
     </div>
     <div class="grid gap-1 grid-cols-auto-fill-md">
       <DeviceCard
-        v-for="(geraet, index) in devices"
+        v-for="(device, index) in devices"
         :key="index"
-        :geraet="geraet"
+        :device="device"
       />
     </div>
   </div>
