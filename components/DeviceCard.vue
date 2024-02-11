@@ -13,7 +13,13 @@ const { geraet } = defineProps<DeviceCardProps>();
     <template #header>
       <div class="flex justify-between">
         <span>{{ geraet.name }}</span>
-        <ElButton type="warning" plain>Status abfragen</ElButton>
+        <ElButton
+          type="warning"
+          plain
+          @click="$router.push(`/device/${geraet.id}`)"
+        >
+          Status abfragen
+        </ElButton>
       </div>
     </template>
     <div>IP-Adresse: {{ geraet.ipAdress }}</div>

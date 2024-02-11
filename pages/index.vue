@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { type Device } from "../interfaces/Device";
-
 useSeoMeta({
-  title: "Steuerung",
-  description: "Steuerung der Geräte",
-  robots: "noindex, nofollow",
+  title: "Übersicht",
+});
+
+definePageMeta({
+  breadcrumb: "Übersicht",
 });
 
 const geraeteItems = ref<Device[]>([
