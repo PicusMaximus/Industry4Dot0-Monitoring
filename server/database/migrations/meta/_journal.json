@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1707653474200,
-      "tag": "0000_lonely_boom_boom",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1707987582254,
-      "tag": "0001_known_wilson_fisk",
+      "when": 1707988466977,
+      "tag": "0000_past_leader",
       "breakpoints": true
     }
   ]

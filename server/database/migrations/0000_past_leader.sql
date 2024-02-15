@@ -1,7 +1,8 @@
 CREATE TABLE `device` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
-	`ip` text
+	`ip` text,
+	`type` integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `event` (
