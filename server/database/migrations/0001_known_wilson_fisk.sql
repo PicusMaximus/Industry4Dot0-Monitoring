@@ -1,0 +1,1 @@
+ALTER TABLE device ADD `type` integer NOT NULL;
