@@ -1,11 +1,11 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "b912ff24-3bbb-4056-89ad-af9b62fa1bf9",
+  "id": "c344386d-fe40-4dff-801b-074c983e7b1b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "device": {
-      "name": "device",
+    "devices": {
+      "name": "devices",
       "columns": {
         "id": {
           "name": "id",
@@ -30,15 +30,15 @@
         },
         "type": {
           "name": "type",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         }
       },
       "indexes": {
-        "device_ip_unique": {
-          "name": "device_ip_unique",
+        "devices_ip_unique": {
+          "name": "devices_ip_unique",
           "columns": [
             "ip"
           ],
@@ -49,8 +49,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "event": {
-      "name": "event",
+    "events": {
+      "name": "events",
       "columns": {
         "id": {
           "name": "id",
@@ -59,11 +59,46 @@
           "notNull": true,
           "autoincrement": true
         },
+        "deviceId": {
+          "name": "deviceId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "message": {
           "name": "message",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "jobId": {
+          "name": "jobId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
