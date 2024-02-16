@@ -1,11 +1,11 @@
-import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-export const devices = sqliteTable("device", {
+export const devices = sqliteTable("devices", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   ip: text("ip").unique(),
-  type: int("type").notNull()
+  type: text("type", { enum: ["sps", "dobot"] }).notNull(),
 });
 
 export const insertDeviceSchema = createInsertSchema(devices);
