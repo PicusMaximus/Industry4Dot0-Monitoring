@@ -8,8 +8,14 @@ export const devices = sqliteTable("devices", {
   type: text("type", { enum: ["sps", "dobot"] }).notNull(),
 });
 
-export const insertDeviceSchema = createInsertSchema(devices);
-export const selectDeviceSchema = createSelectSchema(devices);
+export const insertDeviceSchema = createInsertSchema(devices, {
+  id: (schema) => schema.id.uuid(),
+  ip: (schema) => schema.ip.ip(),
+});
+export const selectDeviceSchema = createSelectSchema(devices, {
+  id: (schema) => schema.id.uuid(),
+  ip: (schema) => schema.ip.ip(),
+});
 
 export type InsertDevice = typeof devices.$inferInsert;
 export type SelectDevice = typeof devices.$inferSelect;

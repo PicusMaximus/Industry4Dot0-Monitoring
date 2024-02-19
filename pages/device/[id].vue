@@ -8,6 +8,14 @@ definePageMeta({
 });
 
 const route = useRoute();
+
+const { data: device, refresh: refreshDevice } = useFetch(
+  `/api/device/${route.params.id}`,
+);
+
+const refreshInterval = useRefreshInterval();
+
+useIntervalFn(refreshDevice, refreshInterval);
 </script>
 
-<template>Details {{ route.params.id }}</template>
+<template>Details {{ device?.name }}</template>

@@ -6,7 +6,11 @@ export default (error: H3Error, event: H3Event) => {
   console.error(`${event.method} ${event.path} - ${error.stack}`);
 
   const errorData = formatError(
-    error.data instanceof Error ? error.data : error,
+    error.cause instanceof Error
+      ? error.cause
+      : error.data instanceof Error
+        ? error.data
+        : error,
   );
 
   if (!errorData.status) {

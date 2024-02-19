@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import { Search } from '@element-plus/icons-vue';
-import { ref } from 'vue';
-
 useSeoMeta({
   title: "Ereignisse",
 });
@@ -10,39 +7,106 @@ definePageMeta({
   breadcrumb: "Ereignisse",
 });
 
-const { data: events, refresh: refreshEvents } = useFetch("/api/log");
+const timeShortcuts = [
+  {
+    text: "Today",
+    value: new Date(),
+  },
+  {
+    text: "Yesterday",
+    value: () => {
+      const date = new Date();
+      date.setTime(date.getTime() - 3600 * 1000 * 24);
+      return date;
+    },
+  },
+  {
+    text: "A week ago",
+    value: () => {
+      const date = new Date();
+      date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+      return date;
+    },
+  },
+];
 
-useIntervalFn(refreshEvents, 1 * 1000);
+// Route query parameters
+const searchQuery = useRouteQuery("search", "");
+const fromQuery = useRouteQuery<Date | undefined>("from", undefined, {
+  parse: (value) => (value ? new Date(value) : undefined),
+  serialize: (value) => (value ? value.toISOString() : undefined),
+});
+const toQuery = useRouteQuery<Date | undefined>("to", undefined, {
+  parse: (value) => (value ? new Date(value) : undefined),
+  serialize: (value) => (value ? value.toISOString() : undefined),
+});
 
-const loading = ref(events ? false : true);
+// Query parameters for the API
+const query = computed(() => ({
+  from: fromQuery.value?.toISOString(),
+  to: toQuery.value?.toISOString(),
+}));
 
-// watchEffect(() => console.log(events.value?.[0]))
+const { data: events, refresh: refreshEvents } = useFetch("/api/log", {
+  query,
+});
 
-// Define a ref to hold the search query
-const searchQuery = ref('');
+const refreshInterval = useRefreshInterval();
+
+useIntervalFn(refreshEvents, refreshInterval);
 
 // Define a computed property to filter events based on the search query
 const filteredEvents = computed(() => {
   if (!events.value) return [];
+  if (!searchQuery.value) return events.value;
+
   const query = searchQuery.value.toLowerCase().trim();
-  return events.value.filter(event =>
-    event.message.toLowerCase().includes(query)
+
+  return events.value.filter((event) =>
+    event.message?.toLowerCase().includes(query),
   );
 });
-
 </script>
 
-<style></style>
-
 <template>
-  <div style="margin-bottom: 16px;">
-    <el-text class="mx-1" size="large">Ereignisse</el-text>
+  <div class="mb-2">
+    <ElText class="mx-1" size="large">Ereignisse</ElText>
   </div>
-  <el-input v-model="searchQuery" placeholder="Sucheparameter" clearable :prefix-icon="Search" size="large"
-    style="width: 50%;" />
-  <el-table v-if="events" v-loading="loading" :data="filteredEvents ?? events" style="width: 100%" stripe>
-    <el-table-column prop="id" label="ID" width="180" />
-    <el-table-column prop="message" label="Nachricht" sortable />
-  </el-table>
+  <ClientOnly>
+    <div class="flex gap-1">
+      <ElInput
+        v-model="searchQuery"
+        placeholder="Sucheparameter"
+        clearable
+        :prefixIcon="ElIconSearch"
+        size="large"
+      />
+      <ElDatePicker
+        v-model="fromQuery"
+        type="datetime"
+        placeholder="Startzeit"
+        :shortcuts="timeShortcuts"
+        size="large"
+        format="DD.MM.YYYY HH:mm"
+      />
+      <ElDatePicker
+        v-model="toQuery"
+        type="datetime"
+        placeholder="Endzeit"
+        :shortcuts="timeShortcuts"
+        size="large"
+        format="DD.MM.YYYY HH:mm"
+      />
+    </div>
+    <ElTable
+      v-loading="!events"
+      :data="filteredEvents"
+      style="width: 100%"
+      stripe
+    >
+      <ElTableColumn prop="id" label="ID" width="180" />
+      <ElTableColumn prop="message" label="Nachricht" sortable />
+    </ElTable>
+    <template #fallback> <Loading /> </template>
+  </ClientOnly>
 </template>
-
