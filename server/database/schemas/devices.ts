@@ -1,18 +1,14 @@
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { createInsertSchema } from "drizzle-zod";
 
 export const devices = sqliteTable("devices", {
   id: text("id").primaryKey(),
-  name: text("name").notNull(),
+  name: text("name", { length: 20 }).notNull(),
   ip: text("ip").unique(),
   type: text("type", { enum: ["sps", "dobot"] }).notNull(),
 });
 
 export const insertDeviceSchema = createInsertSchema(devices, {
-  id: (schema) => schema.id.uuid(),
-  ip: (schema) => schema.ip.ip(),
-});
-export const selectDeviceSchema = createSelectSchema(devices, {
   id: (schema) => schema.id.uuid(),
   ip: (schema) => schema.ip.ip(),
 });

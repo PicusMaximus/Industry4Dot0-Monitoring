@@ -1,6 +1,6 @@
 import { SQL } from "drizzle-orm";
 import { z } from "zod";
-import { SelectEvent } from "~/server/database/schemas/event";
+import { SelectEvent } from "~/server/database/schemas/events";
 
 const eventQuerySchema = z.object({
   to: z.coerce.date().optional(),

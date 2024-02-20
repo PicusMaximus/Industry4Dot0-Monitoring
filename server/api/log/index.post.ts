@@ -1,4 +1,4 @@
-import { InsertEvent } from "~/server/database/schemas/event";
+import { InsertEvent } from "~/server/database/schemas/events";
 
 export default defineEventHandler<{
   body: InsertEvent;

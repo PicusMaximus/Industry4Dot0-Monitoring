@@ -1,21 +1,25 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { devices } from "./devices";
+import { jobs } from "./jobs";
 
 export const events = sqliteTable("events", {
   id: int("id").primaryKey({ autoIncrement: true }),
-  deviceId: int("deviceId").notNull(),
+  deviceId: text("deviceId")
+    .notNull()
+    .references(() => devices.id),
   timestamp: int("timestamp", { mode: "timestamp_ms" }).notNull(),
   level: text("type", { enum: ["info", "warning", "error"] }).notNull(),
-  message: text("message"),
-  jobId: int("jobId"),
+  message: text("message", { length: 100 }),
+  jobId: text("jobId").references(() => jobs.id),
   status: text("status", { enum: ["jobStarted", "jobEnded"] }),
 });
 
 export const insertEventSchema = createInsertSchema(events, {
+  id: z.never(),
   timestamp: (schema) => z.coerce.date(schema.timestamp),
 });
-export const selectEventSchema = createSelectSchema(events);
 
 export type InsertEvent = typeof events.$inferInsert;
 export type SelectEvent = typeof events.$inferSelect;

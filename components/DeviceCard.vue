@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SelectDevice } from "~/server/database/schemas/device";
+import type { SelectDevice } from "~/server/database/schemas/devices";
 
 interface DeviceCardProps {
   device: SelectDevice;

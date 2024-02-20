@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { SelectDevice } from "~/server/database/schemas/device";
+import { SelectDevice } from "~/server/database/schemas/devices";
 
-const deviceParamsSchema = selectDeviceSchema.pick({
+const deviceParamsSchema = insertDeviceSchema.pick({
   id: true,
 });
 

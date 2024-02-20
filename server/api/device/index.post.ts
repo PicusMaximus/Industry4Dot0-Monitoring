@@ -1,7 +1,7 @@
 import {
   InsertDevice,
   insertDeviceSchema,
-} from "~/server/database/schemas/device";
+} from "~/server/database/schemas/devices";
 
 export default defineEventHandler<
   {
