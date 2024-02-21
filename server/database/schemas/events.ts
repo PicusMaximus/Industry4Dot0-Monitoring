@@ -17,7 +17,6 @@ export const events = sqliteTable("events", {
 });
 
 export const insertEventSchema = createInsertSchema(events, {
-  id: z.never(),
   timestamp: (schema) => z.coerce.date(schema.timestamp),
 });
 

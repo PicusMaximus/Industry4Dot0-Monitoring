@@ -2,18 +2,18 @@ import { SQL } from "drizzle-orm";
 import { z } from "zod";
 import { SelectEvent } from "~/server/database/schemas/events";
 
-const eventQuerySchema = z.object({
+const querySchema = z.object({
   to: z.coerce.date().optional(),
   from: z.coerce.date().optional(),
 });
 
 export default defineEventHandler<
   {
-    query: z.infer<typeof eventQuerySchema>;
+    query: z.infer<typeof querySchema>;
   },
   Promise<SelectEvent[]>
 >(async (event) => {
-  const query = await getValidatedQuery(event, eventQuerySchema.parse);
+  const query = await getValidatedQuery(event, querySchema.parse);
   const filters: SQL[] = [];
 
   if (query.to) {

@@ -17,6 +17,7 @@ export default defineNuxtModule({
     const sources: Record<string, string[]> = {
       "../server/database/database": ["db"],
       "drizzle-orm": [
+        "sql",
         "asc",
         "desc",
         "eq",

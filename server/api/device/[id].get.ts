@@ -1,20 +1,17 @@
 import { z } from "zod";
 import { SelectDevice } from "~/server/database/schemas/devices";
 
-const deviceParamsSchema = insertDeviceSchema.pick({
+const paramsSchema = insertDeviceSchema.pick({
   id: true,
 });
 
 export default defineEventHandler<
   {
-    routerParams: z.infer<typeof deviceParamsSchema>;
+    routerParams: z.infer<typeof paramsSchema>;
   },
   Promise<SelectDevice>
 >(async (event) => {
-  const { id } = await getValidatedRouterParams(
-    event,
-    deviceParamsSchema.parse,
-  );
+  const { id } = await getValidatedRouterParams(event, paramsSchema.parse);
 
   const device = (
     await db.select().from(devices).where(eq(devices.id, id)).limit(1)
