@@ -9,7 +9,7 @@ definePageMeta({
 
 const { data: devices, refresh: refreshDevices } = useFetch("/api/device");
 
-useIntervalFn(refreshDevices, 60 * 1000);
+useIntervalFn(refreshDevices, 1 * 1000);
 
 const start = async () => {
   await $fetch("/api/actions/start");
@@ -31,12 +31,9 @@ const emergencyStop = async () => {
       <ElButton type="warning" @click="shutdown">Herunterfahren</ElButton>
       <ElButton type="danger" @click="emergencyStop">Notstop</ElButton>
     </div>
+    <ElDivider />
     <div class="grid gap-1 grid-cols-auto-fill-md">
-      <DeviceCard
-        v-for="(device, index) in devices"
-        :key="index"
-        :device="device"
-      />
+      <DeviceCard v-for="(device, index) in devices" :key="index" :device="device" />
     </div>
   </div>
 </template>

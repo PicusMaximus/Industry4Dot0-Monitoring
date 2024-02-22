@@ -3,7 +3,7 @@
     <ElAside class="grid">
       <ElMenu router :defaultActive="$route.path">
         <ElMenuItem index="/">Übersicht</ElMenuItem>
-        <ElMenuItem index="/settings">Einstellungen</ElMenuItem>
+        <ElMenuItem index="/jobs">Jobs</ElMenuItem>
         <ElMenuItem index="/log">Ereignisse</ElMenuItem>
       </ElMenu>
     </ElAside>
