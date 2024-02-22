@@ -32,10 +32,13 @@ const timeShortcuts = [
 
 // Route query parameters
 const searchQuery = useRouteQuery("search", "");
+const deviceQuery = useRouteQuery("device", '');
+
 const fromQuery = useRouteQuery<Date | undefined>("from", undefined, {
   parse: (value) => (value ? new Date(value) : undefined),
   serialize: (value) => (value ? value.toISOString() : undefined),
 });
+
 const toQuery = useRouteQuery<Date | undefined>("to", undefined, {
   parse: (value) => (value ? new Date(value) : undefined),
   serialize: (value) => (value ? value.toISOString() : undefined),
@@ -43,6 +46,7 @@ const toQuery = useRouteQuery<Date | undefined>("to", undefined, {
 
 // Query parameters for the API
 const query = computed(() => ({
+  device: deviceQuery.value,
   from: fromQuery.value?.toISOString(),
   to: toQuery.value?.toISOString(),
 }));
@@ -66,6 +70,7 @@ const filteredEvents = computed(() => {
     event.message?.toLowerCase().includes(query),
   );
 });
+
 </script>
 
 <template>
@@ -74,39 +79,23 @@ const filteredEvents = computed(() => {
   </div>
   <ClientOnly>
     <div class="flex gap-1">
-      <ElInput
-        v-model="searchQuery"
-        placeholder="Sucheparameter"
-        clearable
-        :prefixIcon="ElIconSearch"
-        size="large"
-      />
-      <ElDatePicker
-        v-model="fromQuery"
-        type="datetime"
-        placeholder="Startzeit"
-        :shortcuts="timeShortcuts"
-        size="large"
-        format="DD.MM.YYYY HH:mm"
-      />
-      <ElDatePicker
-        v-model="toQuery"
-        type="datetime"
-        placeholder="Endzeit"
-        :shortcuts="timeShortcuts"
-        size="large"
-        format="DD.MM.YYYY HH:mm"
-      />
+      <ElInput v-model="searchQuery" placeholder="Sucheparameter" clearable :prefixIcon="ElIconSearch" size="large" />
+      <ElDatePicker v-model="fromQuery" type="datetime" placeholder="Startzeit" :shortcuts="timeShortcuts" size="large"
+        format="DD.MM.YYYY HH:mm" />
+      <ElDatePicker v-model="toQuery" type="datetime" placeholder="Endzeit" :shortcuts="timeShortcuts" size="large"
+        format="DD.MM.YYYY HH:mm" />
     </div>
-    <ElTable
-      v-loading="!events"
-      :data="filteredEvents"
-      style="width: 100%"
-      stripe
-    >
-      <ElTableColumn prop="id" label="ID" width="180" />
+    <ElTable :data="filteredEvents" style="width: 100%" stripe>
+      <!-- <ElTableColumn prop="id" label="ID" width="180" /> -->
+      <!-- <ElTableColumn prop="deviceId" label="Geräte ID" sortable /> -->
+      <ElTableColumn prop="deviceName" label="Gerät" sortable />
+      <ElTableColumn prop="deviceType" label="Gerätetyp" sortable />
       <ElTableColumn prop="message" label="Nachricht" sortable />
+      <ElTableColumn prop="level" label="Log-Level" sortable />
+      <ElTableColumn prop="timestamp" label="Zeitpunkt" sortable />
     </ElTable>
-    <template #fallback> <Loading /> </template>
+    <template #fallback>
+      <Loading />
+    </template>
   </ClientOnly>
 </template>
