@@ -1,5 +1,3 @@
-import { SelectEvent } from "../database/schemas/events";
-
 export default defineEventHandler(async (event) => {
   return db
     .selectDistinct({

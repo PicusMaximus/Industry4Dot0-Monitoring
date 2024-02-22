@@ -1,12 +1,10 @@
-import { LogFilters, getLogs, logFiltersSchema } from "~/server/utils/getLogs";
-
 export default defineEventHandler<
   {
-    query: LogFilters;
+    query: EventFilters;
   },
-  ReturnType<typeof getLogs>
+  ReturnType<typeof getEvents>
 >(async (event) => {
-  const query = await getValidatedQuery(event, logFiltersSchema.parse);
+  const query = await getValidatedQuery(event, eventFiltersSchema.parse);
 
-  return getLogs(query);
+  return getEvents(query);
 });

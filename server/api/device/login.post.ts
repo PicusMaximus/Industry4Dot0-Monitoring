@@ -1,15 +1,16 @@
-import {
-  InsertDevice,
-  insertDeviceSchema,
-} from "~/server/database/schemas/devices";
+import { z } from "zod";
+
+const bodySchema = insertDeviceSchema.required({
+  ip: true,
+})
 
 export default defineEventHandler<
   {
-    body: InsertDevice;
+    body: z.infer<typeof bodySchema>;
   },
-  void
+  ReturnType<typeof insertDevice>
 >(async (event) => {
-  const newDevice = await readValidatedBody(event, insertDeviceSchema.parse);
+  const newDevice = await readValidatedBody(event, bodySchema.parse);
 
-  await db.insert(devices).values([newDevice]);
+  await insertDevice(newDevice);
 });

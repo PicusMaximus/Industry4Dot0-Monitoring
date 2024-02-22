@@ -1,15 +1,15 @@
 import { SQL, getTableColumns } from "drizzle-orm";
 import { z } from "zod";
 
-export const logFiltersSchema = z.object({
+export const eventFiltersSchema = z.object({
   device: z.string().optional(),
   to: z.coerce.date().optional(),
   from: z.coerce.date().optional(),
 });
 
-export type LogFilters = z.infer<typeof logFiltersSchema>;
+export type EventFilters = z.infer<typeof eventFiltersSchema>;
 
-export const getLogs = (filters: LogFilters) => {
+export const getEvents = async (filters: EventFilters) => {
   const filterSQLs: SQL[] = [];
 
   if (filters.to) {
@@ -28,12 +28,15 @@ export const getLogs = (filters: LogFilters) => {
     .select({
       ...getTableColumns(events),
       deviceName: devices.name,
-      deviceType: sql<string>`UPPER(${devices.type})`
+      deviceType: sql<string>`UPPER(${devices.type})`,
     })
     .from(events)
     .leftJoin(devices, eq(devices.id, events.deviceId))
     .where(and(...filterSQLs));
 
-  // console.log(eventsQuery.toSQL())
   return eventsQuery;
-}
+};
+
+export const insertEvent = async (event: InsertEvent) => {
+  await db.insert(events).values([event]);
+};

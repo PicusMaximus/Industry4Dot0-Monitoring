@@ -4,10 +4,13 @@ const bodySchema = insertEventSchema.omit({
   id: true,
 });
 
-export default defineEventHandler<{
-  body: z.infer<typeof bodySchema>;
-}>(async (event) => {
+export default defineEventHandler<
+  {
+    body: z.infer<typeof bodySchema>;
+  },
+  ReturnType<typeof insertEvent>
+>(async (event) => {
   const newEvent = await readValidatedBody(event, bodySchema.parse);
 
-  await db.insert(events).values([newEvent]);
+  await insertEvent(newEvent);
 });
