@@ -29,7 +29,7 @@ const emergencyStop = async () => {
     <div class="grid grid-cols-1 gap-1 md:grid-cols-3">
       <ElButton type="success" @click="start">Start</ElButton>
       <ElButton type="warning" @click="shutdown">Herunterfahren</ElButton>
-      <ElButton type="danger" @click="emergencyStop">Notstop</ElButton>
+      <ElButton type="danger" @click="emergencyStop">Notstopp</ElButton>
     </div>
     <ElDivider />
     <div class="grid gap-1 grid-cols-auto-fill-md">

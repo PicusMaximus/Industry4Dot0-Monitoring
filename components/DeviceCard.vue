@@ -17,7 +17,7 @@ const { device } = defineProps<DeviceCardProps>();
   <ElCard class="box-card">
     <template #header>
       <div class="flex justify-between">
-        <span>{{ device.name }} <span class="font-bold">{{ `(${DeviceType[device.type]})` }}</span></span>
+        <span>{{ device.name }} <span class="font-bold">{{ `(${device.type.toLocaleUpperCase()})` }}</span></span>
         <ElButton type="primary" plain @click="$router.push(`/device/${device.id}`)">
           Details
         </ElButton>
