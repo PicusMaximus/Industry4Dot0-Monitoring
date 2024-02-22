@@ -9,27 +9,19 @@ const { device } = defineProps<DeviceCardProps>();
 </script>
 
 <template>
-  <ElCard class="box-card">
+  <ElCard>
     <template #header>
       <div class="flex justify-between">
-        <span
-          >{{ device.name }}
-          <span class="font-bold">{{
-            `(${device.type.toLocaleUpperCase()})`
-          }}</span></span
-        >
-        <ElButton
-          type="primary"
-          plain
-          @click="$router.push(`/device/${device.id}`)"
-        >
+        <span>{{ device.name }}
+          <span class="font-bold">({{ device.type.toLocaleUpperCase() }})</span></span>
+        <ElButton type="primary" plain @click="$router.push(`/device/${device.id}`)">
           Details
         </ElButton>
       </div>
     </template>
     <div>IP-Adresse: {{ device.ip }}</div>
     <ElDivider />
-    <ElButton type="warning" plain class="w-64"> Status abfragen </ElButton>
+    <ElButton type="warning" plain class="w-full"> Status abfragen </ElButton>
     <!--div>
       Status: {{ device.status }}
     </div-->
