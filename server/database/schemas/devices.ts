@@ -13,7 +13,10 @@ export const insertDeviceSchema = createInsertSchema(devices, {
   id: (schema) => schema.id.uuid(),
   ip: (schema) => schema.ip.ip(),
   type: (schema) =>
-    z.string().transform((value) => value.toLowerCase()).pipe(schema.type),
+    z
+      .string()
+      .transform((value) => value.toLowerCase())
+      .pipe(schema.type),
 });
 
 export type InsertDevice = typeof devices.$inferInsert;

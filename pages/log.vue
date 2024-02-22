@@ -32,7 +32,8 @@ const timeShortcuts = [
 
 // Route query parameters
 const searchQuery = useRouteQuery("search", "");
-const deviceQuery = useRouteQuery("device", '');
+
+const deviceQuery = useRouteQuery("device", "");
 
 const fromQuery = useRouteQuery<Date | undefined>("from", undefined, {
   parse: (value) => (value ? new Date(value) : undefined),
@@ -70,7 +71,6 @@ const filteredEvents = computed(() => {
     event.message?.toLowerCase().includes(query),
   );
 });
-
 </script>
 
 <template>
