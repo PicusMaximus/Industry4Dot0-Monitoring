@@ -89,8 +89,7 @@ const filteredEvents = computed(() => {
       <!-- <ElTableColumn prop="id" label="ID" width="180" /> -->
       <!-- <ElTableColumn prop="deviceId" label="Geräte ID" sortable /> -->
       <ElTableColumn prop="deviceName" label="Gerät" sortable />
-      <ElTableColumn prop="deviceType" label="Gerätetyp" sortable
-        :formatter="((row: typeof filteredEvents) => row.deviceType.toUpperCase())" />
+      <ElTableColumn prop="deviceType" label="Gerätetyp" sortable />
       <ElTableColumn prop="message" label="Nachricht" sortable />
       <ElTableColumn prop="level" label="Log-Level" sortable />
       <ElTableColumn prop="timestamp" label="Zeitpunkt" sortable />
