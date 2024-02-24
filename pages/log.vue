@@ -79,11 +79,29 @@ const filteredEvents = computed(() => {
   </div>
   <ClientOnly>
     <div class="flex gap-1">
-      <ElInput v-model="searchQuery" placeholder="Sucheparameter" clearable :prefixIcon="ElIconSearch" size="large" />
-      <ElDatePicker v-model="fromQuery" type="datetime" placeholder="Startzeit" :shortcuts="timeShortcuts" size="large"
-        format="DD.MM.YYYY HH:mm" />
-      <ElDatePicker v-model="toQuery" type="datetime" placeholder="Endzeit" :shortcuts="timeShortcuts" size="large"
-        format="DD.MM.YYYY HH:mm" />
+      <ElInput
+        v-model="searchQuery"
+        placeholder="Sucheparameter"
+        clearable
+        :prefixIcon="ElIconSearch"
+        size="large"
+      />
+      <ElDatePicker
+        v-model="fromQuery"
+        type="datetime"
+        placeholder="Startzeit"
+        :shortcuts="timeShortcuts"
+        size="large"
+        format="DD.MM.YYYY HH:mm"
+      />
+      <ElDatePicker
+        v-model="toQuery"
+        type="datetime"
+        placeholder="Endzeit"
+        :shortcuts="timeShortcuts"
+        size="large"
+        format="DD.MM.YYYY HH:mm"
+      />
     </div>
     <ElTable :data="filteredEvents" style="width: 100%" stripe>
       <!-- <ElTableColumn prop="id" label="ID" width="180" /> -->

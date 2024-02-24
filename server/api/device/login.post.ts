@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const bodySchema = insertDeviceSchema.required({
   ip: true,
-})
+});
 
 export default defineEventHandler<
   {

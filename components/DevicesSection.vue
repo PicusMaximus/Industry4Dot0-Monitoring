@@ -9,7 +9,11 @@ useIntervalFn(refreshDevices, refreshInterval);
 <template>
   <Section title="Geräte">
     <div class="grid gap-1 grid-cols-auto-fill-md">
-      <DeviceCard v-for="(device, index) in devices" :key="index" :device="device" />
+      <DeviceCard
+        v-for="(device, index) in devices"
+        :key="index"
+        :device="device"
+      />
     </div>
   </Section>
 </template>

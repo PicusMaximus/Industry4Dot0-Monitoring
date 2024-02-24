@@ -11,10 +11,10 @@ const { device } = defineProps<DeviceCardProps>();
 <template>
   <ElCard class="box-card mt-2 cursor-pointer">
     <div class="flex justify-center">
-      <span
-        ><span class="font-bold">{{ `${device.name}` }}</span
-        >{{ ` (${device.ip})` }}</span
-      >
+      <span>
+        <span class="font-bold">{{ `${device.name}` }}</span>
+        {{ ` (${device.ip})` }}
+      </span>
     </div>
   </ElCard>
 </template>

@@ -30,8 +30,9 @@ onMounted(() => {
       :disabled="!changedOrder"
       type="success"
       class="w-60"
-      >Speichern</ElButton
     >
+      Speichern
+    </ElButton>
   </div>
   <ElDivider />
   <div class="flex justify-around">
