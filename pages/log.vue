@@ -1,4 +1,18 @@
 <script lang="ts" setup>
+import EventLogTable from "~/components/eventLogs/EventLogTable.vue";
+
+// interface EventLogItem {
+//   deviceName: string | null;
+//   deviceType: string;
+//   id: number;
+//   deviceId: string;
+//   timestamp: Date;
+//   level: "info" | "warning" | "error";
+//   message: string | null;
+//   jobId: string | null;
+//   status: "gestarted" | "beendet";
+// }
+
 useSeoMeta({
   title: "Ereignisse",
 });
@@ -63,6 +77,7 @@ useIntervalFn(refreshEvents, refreshInterval);
 // Define a computed property to filter events based on the search query
 const filteredEvents = computed(() => {
   if (!events.value) return [];
+  // console.log(events.value);
   if (!searchQuery.value) return events.value;
 
   const query = searchQuery.value.toLowerCase().trim();
@@ -103,15 +118,7 @@ const filteredEvents = computed(() => {
         format="DD.MM.YYYY HH:mm"
       />
     </div>
-    <ElTable :data="filteredEvents" style="width: 100%" stripe>
-      <!-- <ElTableColumn prop="id" label="ID" width="180" /> -->
-      <!-- <ElTableColumn prop="deviceId" label="Geräte ID" sortable /> -->
-      <ElTableColumn prop="deviceName" label="Gerät" sortable />
-      <ElTableColumn prop="deviceType" label="Gerätetyp" sortable />
-      <ElTableColumn prop="message" label="Nachricht" sortable />
-      <ElTableColumn prop="level" label="Log-Level" sortable />
-      <ElTableColumn prop="timestamp" label="Zeitpunkt" sortable />
-    </ElTable>
+    <EventLogTable :data="filteredEvents" />
     <template #fallback>
       <Loading />
     </template>

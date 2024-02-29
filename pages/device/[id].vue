@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import EventLogTable from "~/components/eventLogs/EventLogTable.vue";
+
 useSeoMeta({
   title: "Details",
 });
@@ -13,9 +15,35 @@ const { data: device, refresh: refreshDevice } = useFetch(
   `/api/device/${route.params.id}`,
 );
 
+// Query parameters for the API
+const query = computed(() => ({
+  device: route.params.id,
+  limit: 10,
+}));
+
+const { data: events, refresh: refreshEvents } = useFetch("/api/log", {
+  query,
+});
+
 const refreshInterval = useRefreshInterval();
 
 useIntervalFn(refreshDevice, refreshInterval);
+
+useIntervalFn(refreshEvents, refreshInterval);
 </script>
 
-<template>Details {{ device?.name }}</template>
+<template>
+  <div class="mb-2">
+    <ElText class="mx-1" size="large">Details: {{ device?.name }}</ElText>
+  </div>
+  <ElDivider />
+  <div class="mb-2">
+    <ElText class="mx-1" size="large">Ereignisse</ElText>
+  </div>
+  <ClientOnly>
+    <EventLogTable :data="events" />
+    <template #fallback>
+      <Loading />
+    </template>
+  </ClientOnly>
+</template>
