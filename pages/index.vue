@@ -9,7 +9,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-5 p-5">
     <ControlsSection />
     <DevicesSection />
   </div>
