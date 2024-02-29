@@ -7,7 +7,7 @@
         <ElMenuItem index="/log">Ereignisse</ElMenuItem>
       </ElMenu>
     </ElAside>
-    <ElMain>
+    <ElMain class="p-0">
       <slot></slot>
     </ElMain>
   </div>
