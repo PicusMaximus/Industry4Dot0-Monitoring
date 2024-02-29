@@ -37,6 +37,8 @@ export const getEvents = async (filters: EventFilters) => {
   return eventsQuery;
 };
 
+export type EventItem = Awaited<ReturnType<typeof getEvents>>[number];
+
 export const insertEvent = async (event: InsertEvent) => {
   await db.insert(events).values([event]);
 };
