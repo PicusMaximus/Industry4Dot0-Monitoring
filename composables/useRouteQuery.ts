@@ -20,8 +20,9 @@ const serializeValue = <Value = LocationQueryValue>(
   value: Value,
   defaultValue: Value,
   serialize: (value: Value) => LocationQueryValueRaw = String,
+  leaveDefault = false,
 ) => {
-  if (value === defaultValue) {
+  if (value === defaultValue && !leaveDefault) {
     return undefined;
   }
 
@@ -45,6 +46,10 @@ interface UseRouteQueryOptions<Value = LocationQueryValue> {
    * @returns The serialized value.
    */
   serialize?: (value: Value) => LocationQueryValueRaw;
+  /**
+   * Whether to leave the default value as is when serializing it.
+   */
+  leaveDefault?: boolean;
 }
 
 /**
@@ -75,6 +80,7 @@ export const useRouteQuery = <Value = LocationQueryValue>(
         value,
         defaultValue,
         options?.serialize,
+        options?.leaveDefault,
       );
 
       const query: LocationQueryRaw = {
