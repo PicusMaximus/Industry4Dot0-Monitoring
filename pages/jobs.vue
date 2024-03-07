@@ -70,9 +70,13 @@ const saveOrder = async () => {
     <div class="flex justify-start">
       <ElMenu class="w-96" :defaultActive="'SPS-1'">
         <ElMenuItem
+          class="flex justify-center font-bold"
           v-for="device in devices"
           @click="selectedDevice = device.id"
-          :style="{ 'background-color': stringToColour(device.id) }"
+          :style="{
+            'background-color': stringToColour(device.id),
+            color: getContrast(stringToColour(device.id)),
+          }"
         >
           {{ device.name }}
         </ElMenuItem>

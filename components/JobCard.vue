@@ -6,8 +6,11 @@ const { job } = defineProps<{
 
 <template>
   <ElCard
-    class="box-card mt-2 cursor-pointer"
-    :style="{ 'background-color': stringToColour(job.deviceId) }"
+    class="box-card mt-2 w-96 cursor-pointer"
+    :style="{
+      'background-color': stringToColour(job.deviceId),
+      color: getContrast(stringToColour(job.deviceId)),
+    }"
   >
     <div class="flex justify-center">
       <span>
