@@ -1,77 +1,67 @@
 <script setup>
-import { useStorage } from "@vueuse/core";
 import draggable from "vuedraggable";
 
-const { data: devices, refresh: refreshDevices } = useFetch("/api/device");
-const route = useRoute();
-const router = useRouter();
+const { data: devices } = await useFetch("/api/device");
+const { data: jobs } = await useFetch("/api/job");
 
-const jobs = ref([]);
-const activeJobs = ref([]);
+const originalOrder = jobs.value
+  ?.filter((job) => job.order)
+  .sort((a, b) => a.order - b.order)
+  .map((job) => job.id);
 
-const changedOrder = ref(false);
+const newOrder = ref(originalOrder);
 
-const stringToColour = (str) => {
-  let hash = 0;
-  str.split("").forEach((char) => {
-    hash = char.charCodeAt(0) + ((hash << 5) - hash);
-  });
-  let colour = "#";
-  for (let i = 0; i < 3; i++) {
-    const value = (hash >> (i * 8)) & 0xff;
-    colour += value.toString(16).padStart(2, "0");
-  }
-  return colour;
-};
-
-devices.value?.forEach((device) => {
-  console.log(stringToColour(device.id));
-  device = { ...device, color: stringToColour(device.id) };
+const changedOrder = computed(() => {
+  return (
+    originalOrder.length !== newOrder.value.length ||
+    originalOrder.some((id, index) => id !== newOrder.value[index])
+  );
 });
 
-const jobsObject = {
-  deviceId: "ace32c00-7720-45ce-b457-bf99dfc09337",
-  jobs: [
-    {
-      name: "Arm um 180° nach rechts drehen",
-      id: "ace32c00-7720-45ce-b457-bf99dfc09337",
-    },
-    {
-      name: "Arm um 180° nach links drehen",
-      id: "ace32c00-7720-45ce-b457-bf99dfc09337",
-    },
-  ],
-};
-
-useIntervalFn(refreshDevices, 1000);
-
-function saveActiveJobs() {
-  activeJobsStorage.value = activeJobs.value;
-  console.log(activeJobsStorage.value);
-}
-
-function getJobs(id) {
-  router.replace({ query: { ...route.query, device: id } });
-  jobs.value = jobsObject.jobs;
-}
-
-let activeJobsStorage;
-onMounted(() => {
-  activeJobsStorage = useStorage("active-jobs", [], localStorage, {
-    mergeDefaults: true,
-  });
-  activeJobs.value = JSON.parse(JSON.stringify(activeJobsStorage.value));
+const selectedDevice = useRouteQuery("device", devices.value?.[0].id ?? "", {
+  leaveDefault: true,
 });
+
+const filteredJobs = computed({
+  get: () => {
+    return jobs.value?.filter(
+      (job) =>
+        job.deviceId === selectedDevice.value &&
+        !newOrder.value.includes(job.id),
+    );
+  },
+  set: (value) => {
+    console.log(value);
+  },
+});
+
+const activeJobs = computed({
+  get: () => {
+    return newOrder.value
+      .map((id) => jobs.value?.find((job) => job.id === id))
+      .filter(Boolean);
+  },
+  set: (value) => {
+    newOrder.value = value.map((job) => job.id);
+  },
+});
+
+const saveOrder = async () => {
+  await $fetch("/api/job/setOrder", {
+    method: "POST",
+    body: newOrder.value,
+  });
+};
 </script>
 
 <template>
   <div class="flex flex-col justify-stretch">
     <div class="flex justify-end p-5">
       <ElButton
-        @click="saveActiveJobs"
         :disabled="!changedOrder"
         type="success"
         class="w-60"
+        @click="saveOrder"
       >
         Speichern
       </ElButton>
@@ -80,9 +70,9 @@ onMounted(() => {
     <div class="flex justify-start">
       <ElMenu class="w-96" :defaultActive="'SPS-1'">
         <ElMenuItem
-          @click="() => getJobs(device.id)"
           v-for="device in devices"
-          :style="{ 'background-color': device.color }"
+          @click="selectedDevice = device.id"
+          :style="{ 'background-color': stringToColour(device.id) }"
         >
           {{ device.name }}
         </ElMenuItem>
@@ -91,11 +81,13 @@ onMounted(() => {
         id="jobs-container"
         class="flex h-full w-full flex-col items-center justify-start pt-3"
       >
-        <h1 class="font-bold">Verfügbare Jobs {{ `(${jobs.length})` }}</h1>
+        <h1 class="font-bold">
+          Verfügbare Jobs {{ `(${filteredJobs.length})` }}
+        </h1>
         <draggable
-          v-model="jobs"
+          v-model="filteredJobs"
           tag="ul"
-          :group="{ name: 'jobs', put: 'false' }"
+          :group="{ name: 'jobs' }"
           itemKey="job"
         >
           <template #item="{ element: job }">
@@ -106,7 +98,7 @@ onMounted(() => {
         </draggable>
       </div>
 
-      <ElDivider direction="vertical" class="h-full" style="height: 100vh" />
+      <ElDivider direction="vertical" class="h-[100vh]" />
 
       <div
         id="active-jobs-container"
@@ -114,7 +106,6 @@ onMounted(() => {
       >
         <h1 class="font-bold">Aktive Jobs {{ `(${activeJobs.length})` }}</h1>
         <draggable
-          @change="changedOrder = true"
           v-model="activeJobs"
           tag="ul"
           :group="{ name: 'jobs' }"
