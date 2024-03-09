@@ -6,7 +6,7 @@
   "features": {
     "ghcr.io/devcontainers/features/node:1": "20"
   },
-  "postStartCommand": "npm ci",
+  "onCreateCommand": "npm ci",
   "portsAttributes": {
     "3000": {
       "label": "Nuxt",
@@ -25,7 +25,6 @@
         "christian-kohler.npm-intellisense",
         "esbenp.prettier-vscode",
         "Vue.volar",
-        "Vue.vscode-typescript-vue-plugin",
         "cpreston321.nuxt-vscode"
       ]
     }
