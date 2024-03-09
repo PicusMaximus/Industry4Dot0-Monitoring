@@ -2,6 +2,15 @@ import { createResolver } from "nuxt/kit";
 
 const resolver = createResolver(import.meta.url);
 
+const tsConfig = {
+  compilerOptions: {
+    noUncheckedIndexedAccess: true,
+    noImplicitAny: true,
+    noImplicitThis: true,
+    noEmit: true,
+  },
+};
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -15,18 +24,14 @@ export default defineNuxtConfig({
   },
   nitro: {
     experimental: {
-      openAPI: true,
+      tasks: true,
     },
     errorHandler: resolver.resolve("server/error.ts"),
+    typescript: {
+      tsConfig,
+    },
   },
   typescript: {
-    strict: true,
-    tsConfig: {
-      compilerOptions: {
-        noUncheckedIndexedAccess: true,
-        noImplicitAny: true,
-        noImplicitThis: true,
-      },
-    },
+    tsConfig,
   },
 });
