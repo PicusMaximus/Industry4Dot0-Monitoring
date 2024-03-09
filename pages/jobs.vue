@@ -1,20 +1,26 @@
 <script setup>
 import draggable from "vuedraggable";
 
-const { data: devices } = await useFetch("/api/device");
-const { data: jobs } = await useFetch("/api/job");
+const { data: devices, refresh: refreshDevice } = await useFetch("/api/device");
+const { data: jobs, refresh: refreshJobs } = await useFetch("/api/job");
 
-const originalOrder = jobs.value
-  ?.filter((job) => job.order)
-  .sort((a, b) => a.order - b.order)
-  .map((job) => job.id);
+const originalOrder = computed(() =>
+  (jobs.value ?? [])
+    .filter((job) => job.order !== null)
+    .sort((a, b) => a.order - b.order)
+    .map((job) => job.id),
+);
 
-const newOrder = ref(originalOrder);
+const newOrder = ref(originalOrder.value);
+
+watch(originalOrder, (value) => {
+  newOrder.value = value;
+});
 
 const changedOrder = computed(() => {
   return (
-    originalOrder.length !== newOrder.value.length ||
-    originalOrder.some((id, index) => id !== newOrder.value[index])
+    originalOrder.value.length !== newOrder.value.length ||
+    originalOrder.value.some((id, index) => id !== newOrder.value[index])
   );
 });
 
@@ -51,6 +57,9 @@ const saveOrder = async () => {
     method: "POST",
     body: newOrder.value,
   });
+
+  await refreshDevice();
+  await refreshJobs();
 };
 </script>
 
