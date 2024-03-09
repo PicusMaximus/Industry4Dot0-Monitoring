@@ -15,5 +15,19 @@ export const getDevices = async () => {
 };
 
 export const insertDevice = async (device: InsertDevice) => {
-  await db.insert(devices).values([device]);
+  db.transaction((tx) => {
+    if (!device.ip) {
+      return;
+    }
+
+    tx.update(devices).set({ ip: null }).where(eq(devices.ip, device.ip)).run();
+
+    tx.insert(devices)
+      .values([device])
+      .onConflictDoUpdate({
+        target: devices.id,
+        set: device,
+      })
+      .run();
+  });
 };
