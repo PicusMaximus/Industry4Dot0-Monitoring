@@ -55,7 +55,7 @@ const saveOrder = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col justify-stretch">
+  <div class="flex h-full w-full flex-col justify-stretch">
     <div class="flex justify-end p-5">
       <ElButton
         :disabled="!changedOrder"
@@ -67,7 +67,7 @@ const saveOrder = async () => {
       </ElButton>
     </div>
     <ElDivider class="m-0" />
-    <div class="flex justify-start">
+    <div class="flex grow">
       <ElMenu class="w-96" :defaultActive="'SPS-1'">
         <ElMenuItem
           class="flex justify-center font-bold"
@@ -83,7 +83,7 @@ const saveOrder = async () => {
       </ElMenu>
       <div
         id="jobs-container"
-        class="flex h-full w-full flex-col items-center justify-start pt-3"
+        class="flex grow basis-0 flex-col items-center justify-start gap-2 pt-3"
       >
         <h1 class="font-bold">
           Verfügbare Jobs {{ `(${filteredJobs.length})` }}
@@ -93,6 +93,7 @@ const saveOrder = async () => {
           tag="ul"
           :group="{ name: 'jobs' }"
           itemKey="job"
+          class="flex w-96 grow flex-col gap-2"
         >
           <template #item="{ element: job }">
             <div :key="job">
@@ -102,11 +103,11 @@ const saveOrder = async () => {
         </draggable>
       </div>
 
-      <ElDivider direction="vertical" class="h-[100vh]" />
+      <ElDivider direction="vertical" class="h-full" />
 
       <div
         id="active-jobs-container"
-        class="flex h-full w-full flex-col items-center justify-start pt-3"
+        class="flex grow basis-0 flex-col items-center justify-start gap-2 pt-3"
       >
         <h1 class="font-bold">Aktive Jobs {{ `(${activeJobs.length})` }}</h1>
         <draggable
@@ -114,7 +115,7 @@ const saveOrder = async () => {
           tag="ul"
           :group="{ name: 'jobs' }"
           itemKey="activeJob"
-          style="min-height: 100vh"
+          class="flex w-96 grow flex-col gap-2"
         >
           <template #item="{ element: job }">
             <JobCard :job="job"></JobCard>
