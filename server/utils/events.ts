@@ -10,7 +10,7 @@ export const eventFiltersSchema = z.object({
 
 export type EventFilters = z.infer<typeof eventFiltersSchema>;
 
-export const getEvents = async (filters: EventFilters) => {
+export const getEvents = (filters: EventFilters) => {
   const filterSQLs: SQL[] = [];
 
   if (filters.to) {
@@ -40,11 +40,11 @@ export const getEvents = async (filters: EventFilters) => {
     eventsQuery.limit(filters.limit);
   }
 
-  return eventsQuery;
+  return eventsQuery.all();
 };
 
 export type EventLogItem = Awaited<ReturnType<typeof getEvents>>[number];
 
-export const insertEvent = async (event: InsertEvent) => {
-  await db.insert(events).values([event]);
+export const insertEvent = (event: InsertEvent) => {
+  db.insert(events).values([event]).run();
 };

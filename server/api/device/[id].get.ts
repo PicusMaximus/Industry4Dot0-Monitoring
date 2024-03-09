@@ -8,7 +8,7 @@ export default defineEventHandler<
   {
     routerParams: z.infer<typeof paramsSchema>;
   },
-  ReturnType<typeof getDeviceById>
+  Promise<ReturnType<typeof getDeviceById>>
 >(async (event) => {
   const { id } = await getValidatedRouterParams(event, paramsSchema.parse);
 

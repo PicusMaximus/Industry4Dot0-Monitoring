@@ -12,5 +12,5 @@ export default defineEventHandler<
 >(async (event) => {
   const newEvent = await readValidatedBody(event, bodySchema.parse);
 
-  await insertEvent(newEvent);
+  insertEvent(newEvent);
 });

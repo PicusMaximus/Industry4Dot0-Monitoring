@@ -12,5 +12,5 @@ export default defineEventHandler<
 >(async (event) => {
   const newDevice = await readValidatedBody(event, bodySchema.parse);
 
-  await insertDevice(newDevice);
+  insertDevice(newDevice);
 });

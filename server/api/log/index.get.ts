@@ -2,7 +2,7 @@ export default defineEventHandler<
   {
     query: EventFilters;
   },
-  ReturnType<typeof getEvents>
+  Promise<ReturnType<typeof getEvents>>
 >(async (event) => {
   const query = await getValidatedQuery(event, eventFiltersSchema.parse);
 
