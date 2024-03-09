@@ -10,7 +10,7 @@ export const getDevices = () => {
   return db.select().from(devices).where(isNotNull(devices.ip)).all();
 };
 
-export const insertDevice = async (device: InsertDevice) => {
+export const insertDevice = (device: InsertDevice) => {
   db.transaction((tx) => {
     if (!device.ip) {
       return;

@@ -1,6 +1,6 @@
 import { getTableColumns } from "drizzle-orm";
 import { z } from "zod";
-import { jobOrder } from "../database/schemas/jobs";
+import { InsertJob, jobOrder } from "../database/schemas/jobs";
 
 export const getJobs = () => {
   return db
@@ -13,6 +13,10 @@ export const getJobs = () => {
     .leftJoin(jobOrder, eq(jobs.id, jobOrder.jobId))
     .where(isNotNull(devices.ip))
     .all();
+};
+
+export const insertJobs = (job: InsertJob[]) => {
+  db.insert(jobs).values(job).run();
 };
 
 export const jobOrderSchema = z.array(insertJobSchema.shape.id);
