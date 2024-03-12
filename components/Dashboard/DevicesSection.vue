@@ -7,13 +7,16 @@ useIntervalFn(refreshDevices, refreshInterval);
 </script>
 
 <template>
-  <Section title="Geräte">
+  <DashboardSection title="Geräte">
     <div class="grid gap-1 grid-cols-auto-fill-md">
-      <DeviceCard
+      <DashboardCard
         v-for="(device, index) in devices"
         :key="index"
-        :device="device"
+        :name="device.name"
+        :type="device.type"
+        :rows="[{ title: 'IP', value: device.ip ?? '' }]"
+        @openDetails="() => $router.push(`/device/${device.id}`)"
       />
     </div>
-  </Section>
+  </DashboardSection>
 </template>

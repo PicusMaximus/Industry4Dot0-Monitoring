@@ -10,7 +10,7 @@ definePageMeta({
 
 <template>
   <div class="flex flex-col gap-5 p-5">
-    <ControlsSection />
-    <DevicesSection />
+    <DashboardControlsSection />
+    <DashboardDevicesSection />
   </div>
 </template>

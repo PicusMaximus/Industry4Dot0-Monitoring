@@ -106,7 +106,7 @@ const saveOrder = async () => {
         >
           <template #item="{ element: job }">
             <div :key="job">
-              <JobCard :job="job"></JobCard>
+              <JobOrderCard :job="job"></JobOrderCard>
             </div>
           </template>
         </draggable>
@@ -127,7 +127,7 @@ const saveOrder = async () => {
           class="flex w-96 grow flex-col gap-2"
         >
           <template #item="{ element: job }">
-            <JobCard :job="job"></JobCard>
+            <JobOrderCard :job="job"></JobOrderCard>
           </template>
         </draggable>
       </div>

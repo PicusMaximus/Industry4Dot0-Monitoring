@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import EventLogTable from "~/components/eventLogs/EventLogTable.vue";
-
 useSeoMeta({
   title: "Details",
 });
