@@ -34,4 +34,7 @@ export default defineNuxtConfig({
   typescript: {
     tsConfig,
   },
+  runtimeConfig: {
+    devicePort: 3001,
+  },
 });
