@@ -1,6 +1,6 @@
 import { SQL, getTableColumns } from "drizzle-orm";
 import { z } from "zod";
-import { InsertJob, jobOrder } from "../database/schemas/jobs";
+import { jobOrder, type InsertJob } from "../database/schemas/jobs";
 
 export const getJobs = () => {
   return db

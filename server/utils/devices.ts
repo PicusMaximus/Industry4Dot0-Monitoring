@@ -1,4 +1,4 @@
-import { InsertDevice } from "../database/schemas/devices";
+import { type InsertDevice } from "../database/schemas/devices";
 
 export const getDeviceById = (id: string) => {
   return (

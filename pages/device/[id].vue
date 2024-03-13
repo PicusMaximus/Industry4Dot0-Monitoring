@@ -39,7 +39,7 @@ useIntervalFn(refreshEvents, refreshInterval);
     <ElText class="mx-1" size="large">Ereignisse</ElText>
   </div>
   <ClientOnly>
-    <EventLogTable :data="events" />
+    <EventLogTable v-if="events !== null" :data="events" />
     <template #fallback>
       <Loading />
     </template>

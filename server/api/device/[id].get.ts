@@ -17,7 +17,7 @@ export default defineEventHandler<
   if (!device) {
     throw createError({
       message: "Device not found",
-      status: 404,
+      statusCode: 404,
     });
   }
 

@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import type { Serialize } from "nitropack";
+import type { EventLogItem } from "~/server/utils/events";
+
 interface EventLogTableProps {
-  data: EventLogItem[];
+  data: Serialize<EventLogItem>[];
 }
 
 const { data } = defineProps<EventLogTableProps>();
