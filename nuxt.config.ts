@@ -30,6 +30,9 @@ export default defineNuxtConfig({
     typescript: {
       tsConfig,
     },
+    scheduledTasks: {
+      "* * * * *": ["device:ping"],
+    },
   },
   typescript: {
     tsConfig,
