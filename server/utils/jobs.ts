@@ -32,6 +32,21 @@ export const setJobOrder = (order: JobOrder) => {
     .run();
 };
 
+export const getActiveJobs = () => {
+  return db
+    .select({
+      jobId: jobOrder.jobId,
+      jobName: jobs.name,
+      deviceName: devices.name,
+    })
+    .from(jobOrder)
+    .innerJoin(jobs, eq(jobs.id, jobOrder.jobId))
+    .innerJoin(devices, eq(jobs.deviceId, devices.id))
+    .where(isNotNull(jobOrder.order))
+    .orderBy(jobOrder.order)
+    .all();
+};
+
 const getDeviceDetails = (order: JobOrder) => {
   const orFilters: SQL[] = [isNotNull(jobOrder.order)];
 

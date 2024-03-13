@@ -12,5 +12,6 @@ definePageMeta({
   <div class="flex flex-col gap-5 p-5">
     <DashboardControlsSection />
     <DashboardDevicesSection />
+    <DashboardJobsSection />
   </div>
 </template>

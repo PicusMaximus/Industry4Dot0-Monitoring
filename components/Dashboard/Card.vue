@@ -1,8 +1,9 @@
 <script setup lang="ts">
 interface DashboardCardProps {
   name: string;
-  type: string;
+  type?: string;
   rows: DashboardCardRow[];
+  showDetails?: boolean;
 }
 
 interface DashboardCardRow {
@@ -14,7 +15,7 @@ interface DashboardCardEmits {
   (e: "openDetails"): void;
 }
 
-const { rows, name, type } = defineProps<DashboardCardProps>();
+const { rows, name, type, showDetails } = defineProps<DashboardCardProps>();
 const emit = defineEmits<DashboardCardEmits>();
 </script>
 
@@ -24,9 +25,12 @@ const emit = defineEmits<DashboardCardEmits>();
       <div class="flex justify-between">
         <span>
           {{ name }}
-          <span class="font-bold">({{ type.toLocaleUpperCase() }})</span>
+          <span class="font-bold" v-if="type">
+            ({{ type.toLocaleUpperCase() }})
+          </span>
         </span>
         <ElButton
+          v-if="showDetails"
           class="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           type="primary"
           plain
