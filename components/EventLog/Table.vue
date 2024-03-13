@@ -30,7 +30,14 @@ const tableRowClassName = ({
     <ElTableColumn prop="deviceType" label="Gerätetyp" sortable />
     <ElTableColumn prop="message" label="Nachricht" />
     <ElTableColumn prop="level" label="Log-Level" sortable />
-    <ElTableColumn prop="timestamp" label="Zeitpunkt" sortable />
+    <ElTableColumn
+      :formatter="
+        (row: Serialize<EventLogItem>) =>
+          new Date(row.timestamp).toLocaleString()
+      "
+      label="Zeitpunkt"
+      sortable
+    />
   </ElTable>
 </template>
 
