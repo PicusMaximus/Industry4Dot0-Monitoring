@@ -1,4 +1,6 @@
+import { getTableColumns } from "drizzle-orm";
 import { type InsertDevice } from "../database/schemas/devices";
+import { InsertEvent } from "../database/schemas/events";
 
 export const getDeviceById = (id: string) => {
   return (
@@ -7,7 +9,21 @@ export const getDeviceById = (id: string) => {
 };
 
 export const getDevices = () => {
-  return db.select().from(devices).where(isNotNull(devices.ip)).all();
+  return db
+    .select({
+      ...getTableColumns(devices),
+      lastEventLevel: sql<InsertEvent["level"]>`COALESCE(${db
+        .select({
+          level: events.level,
+        })
+        .from(events)
+        .where(eq(events.deviceId, devices.id))
+        .orderBy(desc(events.timestamp))
+        .limit(1)}, 'info')`,
+    })
+    .from(devices)
+    .where(isNotNull(devices.ip))
+    .all();
 };
 
 export const insertDevice = (device: InsertDevice) => {

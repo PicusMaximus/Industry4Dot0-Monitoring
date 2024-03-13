@@ -30,6 +30,8 @@ export default defineTask({
       )
       .all();
 
+    console.log(inactiveDevices);
+
     inactiveDevices.forEach(({ deviceIp, deviceId }) => {
       $fetch(`http://${deviceIp}:${devicePort}/api/device/getJobs`)
         .then(() => {

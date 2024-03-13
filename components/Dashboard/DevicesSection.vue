@@ -14,7 +14,10 @@ useIntervalFn(refreshDevices, refreshInterval);
         :key="index"
         :name="device.name"
         :type="device.type"
-        :rows="[{ title: 'IP', value: device.ip ?? '' }]"
+        :rows="[
+          { title: 'IP', value: device.ip ?? '' },
+          { title: 'Status', value: device.lastEventLevel },
+        ]"
         showDetails
         @openDetails="() => $router.push(`/device/${device.id}`)"
       />
