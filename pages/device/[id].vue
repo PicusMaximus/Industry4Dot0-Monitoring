@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import EventLogTable from "~/components/eventLogs/EventLogTable.vue";
-
 useSeoMeta({
   title: "Details",
 });
@@ -91,7 +89,7 @@ useIntervalFn(refreshJobs, refreshInterval);
     <ElText class="mx-1" size="large">Ereignisse</ElText>
   </div>
   <ClientOnly>
-    <EventLogTable :data="events" />
+    <EventLogTable v-if="events !== null" :data="events" />
     <template #fallback>
       <Loading />
     </template>

@@ -18,13 +18,15 @@ export default defineEventHandler<
   },
   ReturnType<typeof insertDevice>
 >(async (event) => {
+  const { devicePort } = useRuntimeConfig();
+
   const newDevice = await readValidatedBody(event, bodySchema.parse);
 
   let jobsResponse;
 
   try {
     jobsResponse = await $fetch(
-      `http://${newDevice.ip}:3000/api/device/getJobs`,
+      `http://${newDevice.ip}:${devicePort}/api/device/getJobs`,
     );
   } catch (e) {
     throw new Error("Device is not reachable");

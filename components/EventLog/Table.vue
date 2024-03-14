@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import type { Serialize } from "nitropack";
+import type { EventLogItem } from "~/server/utils/events";
+
 interface EventLogTableProps {
-  data: EventLogItem[];
+  data: Serialize<EventLogItem>[];
 }
 
 const { data } = defineProps<EventLogTableProps>();
@@ -27,7 +30,14 @@ const tableRowClassName = ({
     <ElTableColumn prop="deviceType" label="Gerätetyp" sortable />
     <ElTableColumn prop="message" label="Nachricht" />
     <ElTableColumn prop="level" label="Log-Level" sortable />
-    <ElTableColumn prop="timestamp" label="Zeitpunkt" sortable />
+    <ElTableColumn
+      :formatter="
+        (row: Serialize<EventLogItem>) =>
+          new Date(row.timestamp).toLocaleString()
+      "
+      label="Zeitpunkt"
+      sortable
+    />
   </ElTable>
 </template>
 

@@ -13,11 +13,11 @@ const emergencyStop = async () => {
 </script>
 
 <template>
-  <Section title="Steuerung">
+  <DashboardSection title="Steuerung">
     <div class="grid grid-cols-1 gap-1 md:grid-cols-3">
       <ElButton type="success" @click="start">Start</ElButton>
       <ElButton type="warning" @click="shutdown">Herunterfahren</ElButton>
       <ElButton type="danger" @click="emergencyStop">Notstopp</ElButton>
     </div>
-  </Section>
+  </DashboardSection>
 </template>

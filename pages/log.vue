@@ -1,18 +1,4 @@
 <script lang="ts" setup>
-import EventLogTable from "~/components/eventLogs/EventLogTable.vue";
-
-// interface EventLogItem {
-//   deviceName: string | null;
-//   deviceType: string;
-//   id: number;
-//   deviceId: string;
-//   timestamp: Date;
-//   level: "info" | "warning" | "error";
-//   message: string | null;
-//   jobId: string | null;
-//   status: "gestarted" | "beendet";
-// }
-
 useSeoMeta({
   title: "Ereignisse",
 });
