@@ -36,7 +36,7 @@ export const updateJobs = (job: InsertJob[]) => {
       set: {
         name: sql`excluded.name`,
       },
-      where: eq(jobs.deviceId, sql`excluded.deviceId`),
+      where: eq(jobs.deviceId, sql`excluded.device_id`),
     })
     .run();
 
