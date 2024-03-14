@@ -11,7 +11,7 @@ export const eventFiltersSchema = z.object({
 export type EventFilters = z.infer<typeof eventFiltersSchema>;
 
 export const getEvents = (filters: EventFilters) => {
-  const filterSQLs: SQL[] = [];
+  const filterSQLs: SQL[] = [ne(events.level, "debug")];
 
   if (filters.to) {
     filterSQLs.push(lte(events.timestamp, filters.to));
@@ -33,6 +33,7 @@ export const getEvents = (filters: EventFilters) => {
     })
     .from(events)
     .leftJoin(devices, eq(devices.id, events.deviceId))
+    .leftJoin(jobs, eq(jobs.id, events.jobId))
     .where(and(...filterSQLs))
     .orderBy(desc(events.timestamp));
 

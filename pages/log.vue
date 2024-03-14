@@ -68,8 +68,12 @@ const filteredEvents = computed(() => {
 
   const query = searchQuery.value.toLowerCase().trim();
 
-  return events.value.filter((event) =>
-    event.message?.toLowerCase().includes(query),
+  return events.value.filter(
+    (event) =>
+      event.deviceName?.toLowerCase().includes(query) ||
+      event.deviceType?.toLowerCase().includes(query) ||
+      event.message?.toLowerCase().includes(query) ||
+      event.level?.toLowerCase().includes(query),
   );
 });
 </script>

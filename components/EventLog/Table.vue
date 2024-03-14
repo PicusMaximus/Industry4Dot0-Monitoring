@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TableInstance } from "element-plus";
 import type { Serialize } from "nitropack";
 import type { EventLogItem } from "~/server/utils/events";
 
@@ -22,14 +23,62 @@ const tableRowClassName = ({
   }
   return "";
 };
+
+console.log(data);
+
+const tableRef = ref<TableInstance>();
+
+const clearFilter = () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  tableRef.value!.clearFilter();
+};
+
+const filterDeviceType = (value: string, row: Serialize<EventLogItem>) => {
+  return row.deviceType === value;
+};
+const filterLogLevel = (value: string, row: Serialize<EventLogItem>) => {
+  return row.level === value;
+};
 </script>
 
 <template>
-  <ElTable :data="data" style="width: 100%" :row-class-name="tableRowClassName">
+  <div class="mt-2">
+    <el-button @click="clearFilter">Spaltenfilter zurücksetzen</el-button>
+  </div>
+  <ElTable
+    ref="tableRef"
+    :data="data"
+    style="width: 100%"
+    :row-class-name="tableRowClassName"
+  >
     <ElTableColumn prop="deviceName" label="Gerät" sortable />
-    <ElTableColumn prop="deviceType" label="Gerätetyp" sortable />
+    <ElTableColumn
+      prop="deviceType"
+      label="Gerätetyp"
+      sortable
+      :filters="[
+        { text: 'SPS', value: 'SPS' },
+        { text: 'DOBOT', value: 'DOBOT' },
+      ]"
+      :filter-method="filterDeviceType"
+      filter-placement="bottom-end"
+    />
+    <ElTableColumn prop="jobId" label="Job" />
+    <ElTableColumn prop="status" label="Status" />
     <ElTableColumn prop="message" label="Nachricht" />
-    <ElTableColumn prop="level" label="Log-Level" sortable />
+    <ElTableColumn
+      prop="level"
+      label="Log-Level"
+      sortable
+      :filters="[
+        { text: 'Info', value: 'info' },
+        { text: 'Warning', value: 'warning' },
+        { text: 'Error', value: 'error' },
+        { text: 'Debug', value: 'debig' },
+      ]"
+      :filter-method="filterLogLevel"
+      filter-placement="bottom-end"
+    />
     <ElTableColumn
       :formatter="
         (row: Serialize<EventLogItem>) =>
