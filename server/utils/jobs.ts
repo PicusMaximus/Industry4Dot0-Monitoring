@@ -1,9 +1,21 @@
-import { getTableColumns } from "drizzle-orm";
+import { SQL, getTableColumns } from "drizzle-orm";
 import { z } from "zod";
 import { InsertJob, jobOrder } from "../database/schemas/jobs";
 
-export const getJobs = () => {
-  return db
+export const jobFiltersSchema = z.object({
+  device: z.string().optional(),
+});
+
+export type JobFilters = z.infer<typeof jobFiltersSchema>;
+
+export const getJobs = (filters: JobFilters) => {
+  const filterSQLs: SQL[] = [isNotNull(devices.ip)];
+
+  if (filters.device) {
+    filterSQLs.push(eq(jobs.deviceId, filters.device));
+  }
+
+  const jobsQuery = db
     .selectDistinct({
       ...getTableColumns(jobs),
       order: jobOrder.order,
@@ -11,8 +23,10 @@ export const getJobs = () => {
     .from(jobs)
     .leftJoin(devices, eq(devices.id, devices.id))
     .leftJoin(jobOrder, eq(jobs.id, jobOrder.jobId))
-    .where(isNotNull(devices.ip))
-    .all();
+    .where(and(...filterSQLs));
+
+
+  return jobsQuery.all();
 };
 
 export const insertJobs = (job: InsertJob[]) => {
