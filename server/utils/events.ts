@@ -30,6 +30,7 @@ export const getEvents = (filters: EventFilters) => {
       ...getTableColumns(events),
       deviceName: devices.name,
       deviceType: sql<string>`UPPER(${devices.type})`,
+      jobName: jobs.name,
     })
     .from(events)
     .leftJoin(devices, eq(devices.id, events.deviceId))

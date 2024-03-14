@@ -26,6 +26,26 @@ const tableRowClassName = ({
 
 console.log(data);
 
+function chunkArray<T>(array: T[], chunkSize: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    chunks.push(array.slice(i, i + chunkSize));
+  }
+  return chunks;
+}
+
+let pageRef = ref(0); // Define pageRef as a reactive ref
+
+const newData = chunkArray(data, 15); // Assuming `data` is available
+
+const pageSwitch = (type: string) => {
+  if (type === "prev" && pageRef.value > 0) {
+    pageRef.value--; // Decrement pageRef.value
+  } else if (type === "next" && pageRef.value < newData.length - 1) {
+    pageRef.value++; // Increment pageRef.value
+  }
+};
+
 const tableRef = ref<TableInstance>();
 
 const clearFilter = () => {
@@ -44,10 +64,15 @@ const filterLogLevel = (value: string, row: Serialize<EventLogItem>) => {
 <template>
   <div class="mt-2">
     <el-button @click="clearFilter">Spaltenfilter zurücksetzen</el-button>
+    <el-button @click="() => pageSwitch('prev')">Zurück</el-button>
+    <el-button @click="() => pageSwitch('next')">Vor</el-button>
+    <ElText class="mx-1" size="large">
+      Seite {{ pageRef + 1 }} / {{ newData.length }}
+    </ElText>
   </div>
   <ElTable
     ref="tableRef"
-    :data="data"
+    :data="newData[pageRef]"
     style="width: 100%"
     :row-class-name="tableRowClassName"
   >
@@ -63,7 +88,7 @@ const filterLogLevel = (value: string, row: Serialize<EventLogItem>) => {
       :filter-method="filterDeviceType"
       filter-placement="bottom-end"
     />
-    <ElTableColumn prop="jobId" label="Job" />
+    <ElTableColumn prop="jobName" label="Job" />
     <ElTableColumn prop="status" label="Status" />
     <ElTableColumn prop="message" label="Nachricht" />
     <ElTableColumn
