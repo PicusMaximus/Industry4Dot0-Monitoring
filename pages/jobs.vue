@@ -24,7 +24,7 @@ const changedOrder = computed(() => {
   );
 });
 
-const selectedDevice = useRouteQuery("device", devices.value?.[0].id ?? "", {
+const selectedDevice = useRouteQuery("device", devices.value?.[0]?.id ?? "", {
   leaveDefault: true,
 });
 
@@ -64,72 +64,77 @@ const saveOrder = async () => {
 </script>
 
 <template>
-  <div class="flex h-full w-full flex-col justify-stretch">
-    <div class="flex justify-end p-5">
-      <ElButton
-        :disabled="!changedOrder"
-        type="success"
-        class="w-60"
-        @click="saveOrder"
-      >
-        Speichern
-      </ElButton>
-    </div>
-    <ElDivider class="m-0" />
-    <div class="flex grow">
-      <ElMenu class="w-96" :defaultActive="'SPS-1'">
-        <ElMenuItem
-          class="flex justify-center font-bold"
-          v-for="device in devices"
-          @click="selectedDevice = device.id"
-          :style="{
-            'background-color': stringToColour(device.id),
-            color: getContrast(stringToColour(device.id)),
-          }"
+  <div v-if="devices.length === 0">
+    <h1>Keine Geräte für Job-Konfiguration verfügbar.</h1>
+  </div>
+  <div v-else>
+    <div class="flex h-full w-full flex-col justify-stretch">
+      <div class="flex justify-end p-5">
+        <ElButton
+          :disabled="!changedOrder"
+          type="success"
+          class="w-60"
+          @click="saveOrder"
         >
-          {{ device.name }}
-        </ElMenuItem>
-      </ElMenu>
-      <div
-        id="jobs-container"
-        class="flex grow basis-0 flex-col items-center justify-start gap-2 pt-3"
-      >
-        <h1 class="font-bold">
-          Verfügbare Jobs {{ `(${filteredJobs.length})` }}
-        </h1>
-        <draggable
-          v-model="filteredJobs"
-          tag="ul"
-          :group="{ name: 'jobs' }"
-          itemKey="job"
-          class="flex w-96 grow flex-col gap-2"
-        >
-          <template #item="{ element: job }">
-            <div :key="job">
-              <JobOrderCard :job="job"></JobOrderCard>
-            </div>
-          </template>
-        </draggable>
+          Speichern
+        </ElButton>
       </div>
-
-      <ElDivider direction="vertical" class="h-full" />
-
-      <div
-        id="active-jobs-container"
-        class="flex grow basis-0 flex-col items-center justify-start gap-2 pt-3"
-      >
-        <h1 class="font-bold">Aktive Jobs {{ `(${activeJobs.length})` }}</h1>
-        <draggable
-          v-model="activeJobs"
-          tag="ul"
-          :group="{ name: 'jobs' }"
-          itemKey="activeJob"
-          class="flex w-96 grow flex-col gap-2"
+      <ElDivider class="m-0" />
+      <div class="flex grow">
+        <ElMenu class="w-96" :defaultActive="'SPS-1'">
+          <ElMenuItem
+            class="flex justify-center font-bold"
+            v-for="device in devices"
+            @click="selectedDevice = device.id"
+            :style="{
+              'background-color': stringToColour(device.id),
+              color: getContrast(stringToColour(device.id)),
+            }"
+          >
+            {{ device.name }}
+          </ElMenuItem>
+        </ElMenu>
+        <div
+          id="jobs-container"
+          class="flex grow basis-0 flex-col items-center justify-start gap-2 pt-3"
         >
-          <template #item="{ element: job }">
-            <JobOrderCard :job="job"></JobOrderCard>
-          </template>
-        </draggable>
+          <h1 class="font-bold">
+            Verfügbare Jobs {{ `(${filteredJobs.length})` }}
+          </h1>
+          <draggable
+            v-model="filteredJobs"
+            tag="ul"
+            :group="{ name: 'jobs' }"
+            itemKey="job"
+            class="flex w-96 grow flex-col gap-2"
+          >
+            <template #item="{ element: job }">
+              <div :key="job">
+                <JobOrderCard :job="job"></JobOrderCard>
+              </div>
+            </template>
+          </draggable>
+        </div>
+
+        <ElDivider direction="vertical" class="h-full" />
+
+        <div
+          id="active-jobs-container"
+          class="flex grow basis-0 flex-col items-center justify-start gap-2 pt-3"
+        >
+          <h1 class="font-bold">Aktive Jobs {{ `(${activeJobs.length})` }}</h1>
+          <draggable
+            v-model="activeJobs"
+            tag="ul"
+            :group="{ name: 'jobs' }"
+            itemKey="activeJob"
+            class="flex w-96 grow flex-col gap-2"
+          >
+            <template #item="{ element: job }">
+              <JobOrderCard :job="job"></JobOrderCard>
+            </template>
+          </draggable>
+        </div>
       </div>
     </div>
   </div>
