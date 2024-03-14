@@ -38,5 +38,5 @@ export default defineEventHandler<
   }));
 
   insertDevice(newDevice);
-  insertJobs(deviceJobs);
+  updateJobs(deviceJobs);
 });

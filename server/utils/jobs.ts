@@ -25,12 +25,29 @@ export const getJobs = (filters: JobFilters) => {
     .leftJoin(jobOrder, eq(jobs.id, jobOrder.jobId))
     .where(and(...filterSQLs));
 
-
   return jobsQuery.all();
 };
 
-export const insertJobs = (job: InsertJob[]) => {
-  db.insert(jobs).values(job).run();
+export const updateJobs = (job: InsertJob[]) => {
+  db.insert(jobs)
+    .values(job)
+    .onConflictDoUpdate({
+      target: [jobs.id],
+      set: {
+        name: sql`excluded.name`,
+      },
+      where: eq(jobs.deviceId, sql`excluded.deviceId`),
+    })
+    .run();
+
+  db.delete(jobs)
+    .where(
+      notInArray(
+        jobs.id,
+        job.map((job) => job.id),
+      ),
+    )
+    .run();
 };
 
 export const jobOrderSchema = z.array(insertJobSchema.shape.id);
