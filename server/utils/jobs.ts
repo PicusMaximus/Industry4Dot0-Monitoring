@@ -28,7 +28,7 @@ export const getJobs = (filters: JobFilters) => {
   return jobsQuery.all();
 };
 
-export const updateJobs = (job: InsertJob[]) => {
+export const updateJobs = (deviceId: string, job: InsertJob[]) => {
   db.insert(jobs)
     .values(job)
     .onConflictDoUpdate({
@@ -42,9 +42,12 @@ export const updateJobs = (job: InsertJob[]) => {
 
   db.delete(jobs)
     .where(
-      notInArray(
-        jobs.id,
-        job.map((job) => job.id),
+      and(
+        eq(jobs.deviceId, deviceId),
+        notInArray(
+          jobs.id,
+          job.map((job) => job.id),
+        ),
       ),
     )
     .run();
