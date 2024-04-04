@@ -17,7 +17,5 @@ export default (str: string) => {
     const value = (hash >> (i * 8)) & 0xff;
     colour += value.toString(16).padStart(2, "0");
   }
-  const foregroundColor = getContrastYIQ(colour);
-  console.log(foregroundColor);
-  return foregroundColor;
+  return getContrastYIQ(colour);
 };
