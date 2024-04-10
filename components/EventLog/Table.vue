@@ -36,12 +36,12 @@ function chunkArray<T>(array: T[], chunkSize: number): T[][] {
 
 let pageRef = ref(0); // Define pageRef as a reactive ref
 
-const newData = chunkArray(data, 15); // Assuming `data` is available
+const newData = computed(() => chunkArray(data, 15)); // Assuming `data` is available
 
 const pageSwitch = (type: string) => {
   if (type === "prev" && pageRef.value > 0) {
     pageRef.value--; // Decrement pageRef.value
-  } else if (type === "next" && pageRef.value < newData.length - 1) {
+  } else if (type === "next" && pageRef.value < newData.value.length - 1) {
     pageRef.value++; // Increment pageRef.value
   }
 };

@@ -7,10 +7,7 @@ export default defineTask({
   run({ payload }) {
     const { devicePort } = useRuntimeConfig();
 
-    const now =
-      typeof payload.scheduledTime === "number"
-        ? payload.scheduledTime
-        : Date.now();
+    const now = Date.now();
 
     const inactiveDevices = db
       .selectDistinct({
