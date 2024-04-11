@@ -48,5 +48,10 @@ export const getEvents = (filters: EventFilters) => {
 export type EventLogItem = Awaited<ReturnType<typeof getEvents>>[number];
 
 export const insertEvent = (event: InsertEvent) => {
+  if (event.level === "error") {
+    // STOPPPPPPPP
+    await $fetch("/api/actions/emergency-stop");
+  }
+
   db.insert(events).values([event]).run();
 };
