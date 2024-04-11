@@ -52,15 +52,25 @@ const activeJobs = computed({
   },
 });
 
-const saveOrder = async () => {
-  await $fetch("/api/job/setOrder", {
-    method: "POST",
-    body: newOrder.value,
-  });
+const { execute: saveOrder, pending: saveOrderPending } = useAsync(
+  async () => {
+    await $fetch("/api/job/setOrder", {
+      method: "POST",
+      body: newOrder.value,
+    });
 
-  await refreshDevice();
-  await refreshJobs();
-};
+    await refreshDevice();
+    await refreshJobs();
+  },
+  {
+    onError: (error) => {
+      ElNotification({
+        message: "Fehler beim Speichern der Job-Reihenfolge",
+        type: "error",
+      });
+    },
+  },
+);
 </script>
 
 <template>
@@ -70,7 +80,7 @@ const saveOrder = async () => {
   <div v-else class="flex h-full w-full flex-col justify-stretch">
     <div class="flex justify-end p-5">
       <ElButton
-        :disabled="!changedOrder"
+        :disabled="!changedOrder || saveOrderPending"
         type="success"
         class="w-60"
         @click="saveOrder"

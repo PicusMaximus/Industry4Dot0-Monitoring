@@ -1,23 +1,67 @@
 <script lang="ts" setup>
-const start = async () => {
-  await $fetch("/api/actions/start");
-};
+const { execute: start, pending: startPending } = useAsync(
+  async () => {
+    await $fetch("/api/actions/start", { retry: false });
+  },
+  {
+    onError: (error) => {
+      ElNotification({
+        message: "Fehler beim Starten",
+        type: "error",
+      });
+    },
+  },
+);
 
-const shutdown = async () => {
-  await $fetch("/api/actions/stop");
-};
+const { execute: stop, pending: stopPending } = useAsync(
+  async () => {
+    await $fetch("/api/actions/stop", { retry: false });
+  },
+  {
+    onError: (error) => {
+      ElNotification({
+        message: "Fehler beim Herunterfahren",
+        type: "error",
+      });
+    },
+  },
+);
 
-const emergencyStop = async () => {
-  await $fetch("/api/actions/emergency-stop");
-};
+const { execute: emergencyStop, pending: emergencyStopPending } = useAsync(
+  async () => {
+    await $fetch("/api/actions/emergency-stop", { retry: false });
+  },
+  {
+    onError: (error) => {
+      ElNotification({
+        message: "Fehler beim Notstopp",
+        type: "error",
+      });
+    },
+  },
+);
+
+const loading = computed(
+  () => startPending.value || stopPending.value || emergencyStopPending.value,
+);
 </script>
 
 <template>
   <DashboardSection title="Steuerung">
     <div class="grid grid-cols-1 gap-1 md:grid-cols-3">
-      <ElButton type="success" @click="start">Start</ElButton>
-      <ElButton type="warning" @click="shutdown">Herunterfahren</ElButton>
-      <ElButton type="danger" @click="emergencyStop">Notstopp</ElButton>
+      <ElButton type="success" @click="() => start()" :disabled="loading">
+        Start
+      </ElButton>
+      <ElButton type="warning" @click="() => stop()" :disabled="loading">
+        Herunterfahren
+      </ElButton>
+      <ElButton
+        type="danger"
+        @click="() => emergencyStop()"
+        :disabled="loading"
+      >
+        Notstopp
+      </ElButton>
     </div>
   </DashboardSection>
 </template>
