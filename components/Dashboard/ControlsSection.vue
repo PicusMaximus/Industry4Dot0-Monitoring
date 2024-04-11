@@ -48,12 +48,9 @@ const loading = computed(
 
 <template>
   <DashboardSection title="Steuerung">
-    <div class="grid grid-cols-1 gap-1 md:grid-cols-3">
+    <div class="grid grid-cols-1 gap-1 md:grid-cols-2">
       <ElButton type="success" @click="() => start()" :disabled="loading">
         Start
-      </ElButton>
-      <ElButton type="warning" @click="() => stop()" :disabled="loading">
-        Herunterfahren
       </ElButton>
       <ElButton
         type="danger"
