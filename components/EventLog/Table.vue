@@ -7,7 +7,7 @@ interface EventLogTableProps {
   data: Serialize<EventLogItem>[];
 }
 
-const { data } = defineProps<EventLogTableProps>();
+const props = defineProps<EventLogTableProps>();
 
 const tableRowClassName = ({
   row,
@@ -24,7 +24,7 @@ const tableRowClassName = ({
   return "";
 };
 
-console.log(data);
+console.log(props.data);
 
 function chunkArray<T>(array: T[], chunkSize: number): T[][] {
   const chunks: T[][] = [];
@@ -36,7 +36,7 @@ function chunkArray<T>(array: T[], chunkSize: number): T[][] {
 
 let pageRef = ref(0); // Define pageRef as a reactive ref
 
-const newData = computed(() => chunkArray(data, 15)); // Assuming `data` is available
+const newData = computed(() => chunkArray(props.data, 15)); // Assuming `data` is available
 
 const pageSwitch = (type: string) => {
   if (type === "prev" && pageRef.value > 0) {

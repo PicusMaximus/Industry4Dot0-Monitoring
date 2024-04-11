@@ -1,3 +1,22 @@
+import { z } from "zod";
+
+const jobsResponseSchema = z
+  .object({
+    jobs: z.array(
+      insertJobSchema.omit({
+        deviceId: true,
+      }),
+    ),
+  })
+  .or(
+    z.array(z.tuple([z.string(), z.string()])).transform((jobs) => ({
+      jobs: jobs.map((job) => ({
+        id: job[0],
+        name: job[1],
+      })),
+    })),
+  );
+
 export default defineTask({
   meta: {
     name: "device:ping",
@@ -9,35 +28,31 @@ export default defineTask({
 
     const now = Date.now();
 
-    const inactiveDevices = db
-      .selectDistinct({
+    const allDevices = db
+      .select({
         deviceIp: devices.ip,
         deviceId: devices.id,
       })
       .from(devices)
-      .leftJoin(events, eq(devices.id, events.deviceId))
-      .where(
-        and(
-          isNotNull(devices.ip),
-          or(
-            isNull(events.timestamp),
-            lt(events.timestamp, new Date(now - 60 * 1000)),
-          ),
-        ),
-      )
       .all();
 
-    console.log(inactiveDevices);
+    console.log(allDevices);
 
-    inactiveDevices.forEach(({ deviceIp, deviceId }) => {
+    let jobsResponse;
+
+    allDevices.forEach(({ deviceIp, deviceId }) => {
       $fetch(`http://${deviceIp}:${devicePort}/api/device/getJobs`)
-        .then(() => {
-          insertEvent({
-            timestamp: new Date(),
-            deviceId,
-            level: "info",
-            message: "Gerät erfolgreich angepingt",
-          });
+        .then((jobsResponse) => {
+          const deviceJobs = jobsResponseSchema
+            .parse(jobsResponse)
+            .jobs.map((job) => ({
+              ...job,
+              deviceId: deviceId,
+            }));
+
+          console.log({ deviceJobs });
+
+          updateJobs(deviceId, deviceJobs);
         })
         .catch((error) => {
           insertEvent({

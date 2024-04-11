@@ -29,28 +29,30 @@ export const getJobs = (filters: JobFilters) => {
 };
 
 export const updateJobs = (deviceId: string, job: InsertJob[]) => {
-  db.insert(jobs)
-    .values(job)
-    .onConflictDoUpdate({
-      target: [jobs.id],
-      set: {
-        name: sql`excluded.name`,
-      },
-      where: eq(jobs.deviceId, sql`excluded.device_id`),
-    })
-    .run();
+  db.transaction((tx) => {
+    tx.insert(jobs)
+      .values(job)
+      .onConflictDoUpdate({
+        target: [jobs.id],
+        set: {
+          name: sql`excluded.name`,
+          deviceId: sql`excluded.device_id`,
+        },
+      })
+      .run();
 
-  db.delete(jobs)
-    .where(
-      and(
-        eq(jobs.deviceId, deviceId),
-        notInArray(
-          jobs.id,
-          job.map((job) => job.id),
+    tx.delete(jobs)
+      .where(
+        and(
+          eq(jobs.deviceId, deviceId),
+          notInArray(
+            jobs.id,
+            job.map((job) => job.id),
+          ),
         ),
-      ),
-    )
-    .run();
+      )
+      .run();
+  });
 };
 
 export const jobOrderSchema = z.array(insertJobSchema.shape.id);
