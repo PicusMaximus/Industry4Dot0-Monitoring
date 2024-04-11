@@ -108,24 +108,28 @@ export const sendJobOrder = async (order: JobOrder) => {
 
   const jobDetails = getDeviceDetails(order);
 
-  const jobOrderRequests = jobDetails.map((jobDetail) => {
-    const orderIndex = order.indexOf(jobDetail.id);
+  const jobOrderRequests = jobDetails
+    .map((jobDetail) => {
+      const orderIndex = order.indexOf(jobDetail.id);
 
-    const nextJobId = order[orderIndex + 1] ?? null;
-    const nextDeviceIp =
-      jobDetails.find((jobDetail) => jobDetail.id === nextJobId)?.deviceIp ??
-      null;
+      const nextJobId = order[(orderIndex + 1) % order.length] ?? null;
+      const nextDeviceIp =
+        jobDetails.find((jobDetail) => jobDetail.id === nextJobId)?.deviceIp ??
+        null;
 
-    return {
-      deviceIp: jobDetail.deviceIp,
-      data: {
-        jobId: jobDetail.id,
-        name: jobDetail.name,
-        nextJobId,
-        nextDeviceIp,
-      },
-    };
-  });
+      return {
+        deviceIp: jobDetail.deviceIp,
+        data: {
+          jobId: jobDetail.id,
+          name: jobDetail.name,
+          nextJobId,
+          nextDeviceIp,
+        },
+      };
+    })
+    .filter((request) => request.data.nextDeviceIp !== null);
+
+  console.log(jobOrderRequests);
 
   try {
     await Promise.all(
@@ -142,6 +146,7 @@ export const sendJobOrder = async (order: JobOrder) => {
       }),
     );
   } catch (error) {
+    console.error(error);
     throw new Error("Failed to send job order to devices", { cause: error });
   }
 };

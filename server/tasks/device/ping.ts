@@ -50,11 +50,18 @@ export default defineTask({
               deviceId: deviceId,
             }));
 
-          console.log({ deviceJobs });
-
           updateJobs(deviceId, deviceJobs);
+
+          insertEvent({
+            timestamp: new Date(),
+            deviceId,
+            level: "info",
+            message: "Jobs aktualisiert",
+          });
         })
         .catch((error) => {
+          console.error(error);
+
           insertEvent({
             timestamp: new Date(),
             deviceId,
