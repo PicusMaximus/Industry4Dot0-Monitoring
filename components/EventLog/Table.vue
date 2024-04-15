@@ -24,7 +24,7 @@ const tableRowClassName = ({
   return "";
 };
 
-console.log(props.data);
+console.log(data);
 
 function chunkArray<T>(array: T[], chunkSize: number): T[][] {
   const chunks: T[][] = [];
@@ -63,18 +63,18 @@ const filterLogLevel = (value: string, row: Serialize<EventLogItem>) => {
 
 <template>
   <div class="mt-2">
-    <el-button @click="clearFilter">Spaltenfilter zurücksetzen</el-button>
-    <el-button @click="() => pageSwitch('prev')">Zurück</el-button>
+    <!-- <el-button @click="() => pageSwitch('prev')">Zurück</el-button>
     <el-button @click="() => pageSwitch('next')">Vor</el-button>
     <ElText class="mx-1" size="large">
       Seite {{ pageRef + 1 }} / {{ newData.length }}
-    </ElText>
+    </ElText> -->
   </div>
   <ElTable
     ref="tableRef"
-    :data="newData[pageRef]"
+    :data="data"
     style="width: 100%"
     :row-class-name="tableRowClassName"
+    max-height="760"
   >
     <ElTableColumn prop="deviceName" label="Gerät" sortable />
     <ElTableColumn
@@ -99,7 +99,7 @@ const filterLogLevel = (value: string, row: Serialize<EventLogItem>) => {
         { text: 'Info', value: 'info' },
         { text: 'Warning', value: 'warning' },
         { text: 'Error', value: 'error' },
-        { text: 'Debug', value: 'debig' },
+        { text: 'Debug', value: 'debug' },
       ]"
       :filter-method="filterLogLevel"
       filter-placement="bottom-end"
@@ -113,6 +113,7 @@ const filterLogLevel = (value: string, row: Serialize<EventLogItem>) => {
       sortable
     />
   </ElTable>
+  <el-button @click="clearFilter">Spaltenfilter zurücksetzen</el-button>
 </template>
 
 <style>
