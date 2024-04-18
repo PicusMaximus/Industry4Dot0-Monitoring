@@ -18,5 +18,8 @@
     "tsconfig.json": "tsconfig.*.json"
   },
   "vue.complete.casing.props": "autoCamel",
-  "vue.complete.casing.tags": "autoPascal"
+  "vue.complete.casing.tags": "autoPascal",
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

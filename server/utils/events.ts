@@ -49,11 +49,38 @@ export type EventLogItem = Awaited<ReturnType<typeof getEvents>>[number];
 
 export const insertEvent = (event: InsertEvent) => {
   if (event.level === "error") {
-    // STOPPPPPPPP
-    $fetch("/api/actions/emergency-stop").then(() =>
-      console.log("Wegen Error Emergency-Stop"),
-    );
+    stop("Error")
+  }
+
+  if (event.status === "wartung-gestartet") {
+    stop("Wartungsmodus gestartet")
+  }
+
+  if (event.status === "wartung-beendet") {
+    const result = db.select()
+      .from(events)
+      .where(
+        and(
+          ne(events.deviceId, event.deviceId),
+          ilike(events.status, "wartung-gestartet")
+        )).all()
+
+    if (result.length === 0) {
+      start()
+    }
   }
 
   db.insert(events).values([event]).run();
 };
+
+function stop(message: string) {
+  $fetch("/api/actions/emergency-stop").then(() =>
+    console.log(`Emergency-Stop: ${message}`),
+  );
+}
+
+function start() {
+  $fetch("/api/actions/start").then(() => {
+    console.log("Anlage wird gestartet...")
+  });
+}

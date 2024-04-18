@@ -13,7 +13,7 @@ export const events = sqliteTable("events", {
   level: text("type", { enum: ["info", "warning", "error", "debug"] }).notNull(),
   message: text("message", { length: 100 }),
   jobId: text("jobId").references(() => jobs.id),
-  status: text("status", { enum: ["gestarted", "beendet"] }),
+  status: text("status", { enum: ["job-gestartet", "job-beendet", "wartung-gestartet", "wartung-beendet"] }),
 });
 
 export const insertEventSchema = createInsertSchema(events, {
