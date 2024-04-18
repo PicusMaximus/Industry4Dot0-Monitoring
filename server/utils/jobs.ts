@@ -69,11 +69,21 @@ export const setJobOrder = (order: JobOrder) => {
 };
 
 export const getActiveJobs = () => {
+  const jobStatusQuery = db
+    .selectDistinct({
+      status: sql<
+        SelectEvent["status"]
+      >`FIRST_VALUE(${events.status}) OVER (PARTITION BY ${events.jobId} ORDER BY ${events.timestamp} DESC)`,
+    })
+    .from(events)
+    .where(eq(events.jobId, jobs.id));
+
   return db
     .select({
       jobId: jobOrder.jobId,
       jobName: jobs.name,
       deviceName: devices.name,
+      status: sql<SelectEvent["status"]>`${jobStatusQuery}`,
     })
     .from(jobOrder)
     .innerJoin(jobs, eq(jobs.id, jobOrder.jobId))

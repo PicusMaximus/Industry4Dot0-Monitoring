@@ -2,6 +2,7 @@ export const useAsync = <T extends unknown>(
   fn: () => Promise<T>,
   options: {
     onError?: (error: unknown) => void;
+    onSuccess?: (result: T) => void;
   },
 ) => {
   const pending = ref<boolean>(false);
@@ -12,7 +13,13 @@ export const useAsync = <T extends unknown>(
       pending.value = true;
 
       try {
-        return await fn();
+        const result = await fn();
+
+        if (options.onSuccess) {
+          options.onSuccess(result);
+        }
+
+        return result;
       } catch (error) {
         if (options.onError) {
           options.onError(error);
