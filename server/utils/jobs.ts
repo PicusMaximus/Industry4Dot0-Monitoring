@@ -113,12 +113,26 @@ const getDeviceDetails = (order: JobOrder) => {
     .all() as { id: string; name: string; deviceIp: string }[];
 };
 
-export const sendJobOrder = async (order: JobOrder) => {
+const getJobOrder = () => {
+  return db
+    .select({
+      jobId: jobOrder.jobId,
+    })
+    .from(jobOrder)
+    .orderBy(jobOrder.order)
+    .all().map((row) => row.jobId);
+}
+
+export const sendJobOrder = async (order?: JobOrder, deviceIp?: string) => {
+  if (!order) {
+    order = getJobOrder();
+  }
+
   const { devicePort } = useRuntimeConfig();
 
   const jobDetails = getDeviceDetails(order);
 
-  const jobOrderRequests = jobDetails
+  let jobOrderRequests = jobDetails
     .map((jobDetail) => {
       const orderIndex = order.indexOf(jobDetail.id);
 
@@ -138,6 +152,12 @@ export const sendJobOrder = async (order: JobOrder) => {
       };
     })
     .filter((request) => request.data.nextDeviceIp !== null);
+
+  if (deviceIp) {
+    jobOrderRequests = jobOrderRequests.filter(
+      (request) => request.deviceIp === deviceIp,
+    );
+  }
 
   console.log(jobOrderRequests);
 
