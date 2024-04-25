@@ -69,6 +69,12 @@ const { execute: saveOrder, pending: saveOrderPending } = useAsync(
         type: "error",
       });
     },
+    onSuccess: () => {
+      ElNotification({
+        message: "Job-Reihenfolge erfolgreich gespeichert",
+        type: "success",
+      });
+    },
   },
 );
 </script>

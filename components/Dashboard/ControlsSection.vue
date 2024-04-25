@@ -10,6 +10,12 @@ const { execute: start, pending: startPending } = useAsync(
         type: "error",
       });
     },
+    onSuccess: () => {
+      ElNotification({
+        message: "Start erfolgreich",
+        type: "success",
+      });
+    },
   },
 );
 
@@ -24,6 +30,12 @@ const { execute: stop, pending: stopPending } = useAsync(
         type: "error",
       });
     },
+    onSuccess: () => {
+      ElNotification({
+        message: "Herunterfahren erfolgreich",
+        type: "success",
+      });
+    },
   },
 );
 
@@ -36,6 +48,12 @@ const { execute: emergencyStop, pending: emergencyStopPending } = useAsync(
       ElNotification({
         message: "Fehler beim Notstopp",
         type: "error",
+      });
+    },
+    onSuccess: () => {
+      ElNotification({
+        message: "Notstopp erfolgreich",
+        type: "success",
       });
     },
   },
