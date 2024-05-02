@@ -27,3 +27,9 @@ useIntervalFn(refreshDevices, refreshInterval);
     </div>
   </DashboardSection>
 </template>
+
+<style>
+.stopped-job {
+  background-color: lightcoral;
+}
+</style>

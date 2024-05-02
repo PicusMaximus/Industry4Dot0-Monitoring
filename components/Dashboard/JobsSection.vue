@@ -14,6 +14,10 @@ useIntervalFn(refreshJobs, refreshInterval);
         :key="index"
         :name="job.jobName"
         :rows="[{ title: 'Gerät', value: job.deviceName }]"
+        :class="{
+          'active-job': job.status === 'job-gestartet',
+          'stopped-job': job.status === 'wartung-gestartet',
+        }"
       />
     </div>
     <div v-else class="flex justify-around">
@@ -21,3 +25,12 @@ useIntervalFn(refreshJobs, refreshInterval);
     </div>
   </DashboardSection>
 </template>
+
+<style>
+.active-job {
+  background-color: lightgreen;
+}
+.stopped-job {
+  background-color: lightcoral;
+}
+</style>

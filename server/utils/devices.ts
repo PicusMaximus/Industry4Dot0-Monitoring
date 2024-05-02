@@ -43,3 +43,13 @@ export const insertDevice = (device: InsertDevice) => {
       .run();
   });
 };
+
+export const logoutDevice = (deviceId: string) => {
+  db.transaction((tx) => {
+    if (!deviceId) {
+      return;
+    }
+
+    tx.update(devices).set({ ip: null }).where(eq(devices.id, deviceId)).run();
+  });
+};

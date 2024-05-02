@@ -31,8 +31,35 @@ const { data: jobs, refresh: refreshJobs } = useFetch("/api/job", {
   query: queryJobs,
 });
 
-console.log(toValue(jobs));
-console.log(toValue(device));
+// console.log(toValue(jobs));
+// console.log(toValue(device));
+
+const { execute: logout, pending: logoutPending } = useAsync(
+  async () => {
+    const id = route.params.id;
+    await $fetch("/api/device/logout", {
+      method: "POST",
+      retry: false,
+      body: {
+        id,
+      },
+    });
+  },
+  {
+    onError: (error) => {
+      ElNotification({
+        message: "Fehler beim Abmelden",
+        type: "error",
+      });
+    },
+    onSuccess: () => {
+      ElNotification({
+        message: "Abmelden erfolgreich",
+        type: "success",
+      });
+    },
+  },
+);
 
 const refreshInterval = useRefreshInterval();
 
@@ -60,8 +87,18 @@ useIntervalFn(refreshJobs, refreshInterval);
       <li>
         <ElText class="mx-1" size="large">IP-Adresse: {{ device?.ip }}</ElText>
       </li>
-      <li></li>
-      <ElText class="mx-1" size="large">ID: {{ device?.id }}</ElText>
+      <li>
+        <ElText class="mx-1" size="large">ID: {{ device?.id }}</ElText>
+      </li>
+      <li>
+        <ElButton
+          type="danger"
+          @click="() => logout()"
+          :disabled="logoutPending"
+        >
+          Gerät abmelden
+        </ElButton>
+      </li>
     </ul>
   </div>
 
