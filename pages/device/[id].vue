@@ -31,9 +31,6 @@ const { data: jobs, refresh: refreshJobs } = useFetch("/api/job", {
   query: queryJobs,
 });
 
-// console.log(toValue(jobs));
-// console.log(toValue(device));
-
 const { execute: logout, pending: logoutPending } = useAsync(
   async () => {
     const id = route.params.id;
@@ -71,64 +68,34 @@ useIntervalFn(refreshJobs, refreshInterval);
 </script>
 
 <template>
-  <div class="mb-2">
-    <div class="mb-2">
-      <ElText class="mx-1" size="large">Details:</ElText>
-    </div>
-    <ul>
-      <li>
-        <ElText class="mx-1" size="large">Name: {{ device?.name }}</ElText>
-      </li>
-      <li>
-        <ElText class="mx-1" size="large">
-          Gerätetyp: {{ device?.type.toUpperCase() }}
-        </ElText>
-      </li>
-      <li>
-        <ElText class="mx-1" size="large">IP-Adresse: {{ device?.ip }}</ElText>
-      </li>
-      <li>
-        <ElText class="mx-1" size="large">ID: {{ device?.id }}</ElText>
-      </li>
-      <li>
-        <ElButton
-          type="danger"
-          @click="() => logout()"
-          :disabled="logoutPending"
-        >
-          Gerät abmelden
-        </ElButton>
-      </li>
-    </ul>
-  </div>
+  <div class="flex flex-col gap-5 p-5">
+    <DashboardSection title="Details">
+      <DashboardCard
+        :name="device?.name"
+        :type="device?.type"
+        :rows="[
+          { title: 'Name', value: device?.name ?? '' },
+          { title: 'Gerätetyp', value: device?.type.toUpperCase() ?? '' },
+          { title: 'IP-Adresse', value: device?.ip ?? '' },
+          { title: 'ID', value: device?.id },
+        ]"
+        showLogout
+        @logout="logout"
+        :logoutDisabled="logoutPending"
+      />
+    </DashboardSection>
 
-  <ElDivider />
+    <DashboardJobsSection />
 
-  <div class="mb-2">
-    <template v-if="jobs && jobs.length">
-      <div class="mb-2">
-        <ElText class="mx-1" size="large">Jobs:</ElText>
+    <DashboardSection title="Ereignisse">
+      <div class="flex flex-col gap-5">
+        <ClientOnly>
+          <EventLogTable v-if="events !== null" :data="events" />
+          <template #fallback>
+            <Loading />
+          </template>
+        </ClientOnly>
       </div>
-      <ul>
-        <li v-for="(job, index) in jobs" :key="index">
-          <ElText class="mx-1" size="large">- {{ job.name }}</ElText>
-        </li>
-      </ul>
-    </template>
-    <template v-else>
-      <ElText class="mx-1" size="large">Keine Jobs verfügbar</ElText>
-    </template>
+    </DashboardSection>
   </div>
-
-  <ElDivider />
-
-  <div class="mb-2">
-    <ElText class="mx-1" size="large">Ereignisse</ElText>
-  </div>
-  <ClientOnly>
-    <EventLogTable v-if="events !== null" :data="events" />
-    <template #fallback>
-      <Loading />
-    </template>
-  </ClientOnly>
 </template>

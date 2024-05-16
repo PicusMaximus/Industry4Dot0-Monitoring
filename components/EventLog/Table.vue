@@ -24,26 +24,6 @@ const tableRowClassName = ({
   return "";
 };
 
-function chunkArray<T>(array: T[], chunkSize: number): T[][] {
-  const chunks: T[][] = [];
-  for (let i = 0; i < array.length; i += chunkSize) {
-    chunks.push(array.slice(i, i + chunkSize));
-  }
-  return chunks;
-}
-
-let pageRef = ref(0); // Define pageRef as a reactive ref
-
-const newData = computed(() => chunkArray(props.data, 15)); // Assuming `data` is available
-
-const pageSwitch = (type: string) => {
-  if (type === "prev" && pageRef.value > 0) {
-    pageRef.value--; // Decrement pageRef.value
-  } else if (type === "next" && pageRef.value < newData.value.length - 1) {
-    pageRef.value++; // Increment pageRef.value
-  }
-};
-
 const tableRef = ref<TableInstance>();
 
 const clearFilter = () => {
@@ -60,19 +40,14 @@ const filterLogLevel = (value: string, row: Serialize<EventLogItem>) => {
 </script>
 
 <template>
-  <div class="mt-2">
-    <!-- <el-button @click="() => pageSwitch('prev')">Zurück</el-button>
-    <el-button @click="() => pageSwitch('next')">Vor</el-button>
-    <ElText class="mx-1" size="large">
-      Seite {{ pageRef + 1 }} / {{ newData.length }}
-    </ElText> -->
-  </div>
+  <el-button @click="clearFilter">Spaltenfilter zurücksetzen</el-button>
+
   <ElTable
     ref="tableRef"
     :data="data"
     style="width: 100%"
     :row-class-name="tableRowClassName"
-    max-height="760"
+    max-height="680"
   >
     <ElTableColumn prop="deviceName" label="Gerät" sortable />
     <ElTableColumn
@@ -111,7 +86,6 @@ const filterLogLevel = (value: string, row: Serialize<EventLogItem>) => {
       sortable
     />
   </ElTable>
-  <el-button @click="clearFilter">Spaltenfilter zurücksetzen</el-button>
 </template>
 
 <style>

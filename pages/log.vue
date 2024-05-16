@@ -79,40 +79,39 @@ const filteredEvents = computed(() => {
 </script>
 
 <template>
-  <div class="p-5">
-    <div class="mb-2">
-      <ElText class="mx-1" size="large">Ereignisse</ElText>
-    </div>
-    <ClientOnly>
-      <div class="flex gap-1">
-        <ElInput
-          v-model="searchQuery"
-          placeholder="Sucheparameter"
-          clearable
-          :prefixIcon="ElIconSearch"
-          size="large"
-        />
-        <ElDatePicker
-          v-model="fromQuery"
-          type="datetime"
-          placeholder="Startzeit"
-          :shortcuts="timeShortcuts"
-          size="large"
-          format="DD.MM.YYYY HH:mm"
-        />
-        <ElDatePicker
-          v-model="toQuery"
-          type="datetime"
-          placeholder="Endzeit"
-          :shortcuts="timeShortcuts"
-          size="large"
-          format="DD.MM.YYYY HH:mm"
-        />
-      </div>
-      <EventLogTable :data="filteredEvents" />
-      <template #fallback>
-        <Loading />
-      </template>
-    </ClientOnly>
+  <div class="flex flex-col gap-5 p-5">
+    <DashboardSection title="Ereignisse">
+      <ClientOnly>
+        <div class="flex gap-1">
+          <ElInput
+            v-model="searchQuery"
+            placeholder="Sucheparameter"
+            clearable
+            :prefixIcon="ElIconSearch"
+            size="large"
+          />
+          <ElDatePicker
+            v-model="fromQuery"
+            type="datetime"
+            placeholder="Startzeit"
+            :shortcuts="timeShortcuts"
+            size="large"
+            format="DD.MM.YYYY HH:mm"
+          />
+          <ElDatePicker
+            v-model="toQuery"
+            type="datetime"
+            placeholder="Endzeit"
+            :shortcuts="timeShortcuts"
+            size="large"
+            format="DD.MM.YYYY HH:mm"
+          />
+        </div>
+        <EventLogTable :data="filteredEvents" />
+        <template #fallback>
+          <Loading />
+        </template>
+      </ClientOnly>
+    </DashboardSection>
   </div>
 </template>

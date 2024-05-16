@@ -4,6 +4,8 @@ interface DashboardCardProps {
   type?: string;
   rows: DashboardCardRow[];
   showDetails?: boolean;
+  showLogout?: boolean;
+  logoutDisabled?: boolean;
 }
 
 interface DashboardCardRow {
@@ -13,9 +15,11 @@ interface DashboardCardRow {
 
 interface DashboardCardEmits {
   (e: "openDetails"): void;
+  (e: "logout"): void;
 }
 
-const { rows, name, type, showDetails } = defineProps<DashboardCardProps>();
+const { rows, name, type, showDetails, showLogout, logoutDisabled } =
+  defineProps<DashboardCardProps>();
 const emit = defineEmits<DashboardCardEmits>();
 </script>
 
@@ -37,6 +41,14 @@ const emit = defineEmits<DashboardCardEmits>();
           @click="$emit('openDetails')"
         >
           Details
+        </ElButton>
+        <ElButton
+          v-if="showLogout"
+          type="danger"
+          @click="$emit('logout')"
+          :disabled="logoutDisabled"
+        >
+          Gerät abmelden
         </ElButton>
       </div>
     </template>
