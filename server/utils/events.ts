@@ -49,7 +49,7 @@ export type EventLogItem = Awaited<ReturnType<typeof getEvents>>[number];
 
 export const insertEvent = (event: InsertEvent) => {
   if (event.level === "error") {
-    stop("Error")
+    // stop("Error")
   }
 
   if (event.status === "wartung-gestartet") {

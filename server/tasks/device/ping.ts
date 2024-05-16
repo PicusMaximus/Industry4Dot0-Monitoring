@@ -34,11 +34,10 @@ export default defineTask({
         deviceId: devices.id,
       })
       .from(devices)
+      .where(isNotNull(devices.ip))
       .all();
 
     console.log(allDevices);
-
-    let jobsResponse;
 
     allDevices.forEach(({ deviceIp, deviceId }) => {
       $fetch(`http://${deviceIp}:${devicePort}/api/device/getJobs`)
