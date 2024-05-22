@@ -10,11 +10,15 @@ export default defineEventHandler<
   },
   ReturnType<typeof insertDevice>
 >(async (event) => {
-  const { devicePort } = useRuntimeConfig();
+  const {
+    public: { devicePort },
+  } = useRuntimeConfig();
 
   const newDevice = await readValidatedBody(event, bodySchema.parse);
 
   insertDevice(newDevice);
+
+  runTask("device:ping");
 
   console.log({ newDevice, devicePort });
 });

@@ -53,20 +53,23 @@ export const insertEvent = (event: InsertEvent) => {
   }
 
   if (event.status === "wartung-gestartet") {
-    stop("Wartungsmodus gestartet")
+    stop("Wartungsmodus gestartet");
   }
 
   if (event.status === "wartung-beendet") {
-    const result = db.select()
+    const result = db
+      .select()
       .from(events)
       .where(
         and(
           ne(events.deviceId, event.deviceId),
-          ilike(events.status, "wartung-gestartet")
-        )).all()
+          ilike(events.status, "wartung-gestartet"),
+        ),
+      )
+      .all();
 
     if (result.length === 0) {
-      start()
+      start();
     }
   }
 
@@ -81,6 +84,6 @@ function stop(message: string) {
 
 function start() {
   $fetch("/api/actions/start").then(() => {
-    console.log("Anlage wird gestartet...")
+    console.log("Anlage wird gestartet...");
   });
 }

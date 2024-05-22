@@ -15,6 +15,13 @@
       "when": 1709425473531,
       "tag": "0001_happy_steve_rogers",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1716415654733,
+      "tag": "0002_clean_iron_fist",
+      "breakpoints": true
     }
   ]
 }

@@ -5,6 +5,7 @@ interface DashboardCardProps {
   rows: DashboardCardRow[];
   showDetails?: boolean;
   showLogout?: boolean;
+  showOpenInterface?: boolean;
   logoutDisabled?: boolean;
 }
 
@@ -16,10 +17,18 @@ interface DashboardCardRow {
 interface DashboardCardEmits {
   (e: "openDetails"): void;
   (e: "logout"): void;
+  (e: "openInterface"): void;
 }
 
-const { rows, name, type, showDetails, showLogout, logoutDisabled } =
-  defineProps<DashboardCardProps>();
+const {
+  rows,
+  name,
+  type,
+  showDetails,
+  showLogout,
+  showOpenInterface,
+  logoutDisabled,
+} = defineProps<DashboardCardProps>();
 const emit = defineEmits<DashboardCardEmits>();
 </script>
 
@@ -33,23 +42,33 @@ const emit = defineEmits<DashboardCardEmits>();
             ({{ type.toLocaleUpperCase() }})
           </span>
         </span>
-        <ElButton
-          v-if="showDetails"
-          class="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          type="primary"
-          plain
-          @click="$emit('openDetails')"
-        >
-          Details
-        </ElButton>
-        <ElButton
-          v-if="showLogout"
-          type="danger"
-          @click="$emit('logout')"
-          :disabled="logoutDisabled"
-        >
-          Gerät abmelden
-        </ElButton>
+        <div class="flex gap-2">
+          <ElButton
+            v-if="showDetails"
+            class="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            type="primary"
+            plain
+            @click="$emit('openDetails')"
+          >
+            Details
+          </ElButton>
+          <ElButton
+            v-if="showOpenInterface"
+            type="primary"
+            plain
+            @click="$emit('openInterface')"
+          >
+            Interface öffnen
+          </ElButton>
+          <ElButton
+            v-if="showLogout"
+            type="danger"
+            @click="$emit('logout')"
+            :disabled="logoutDisabled"
+          >
+            Gerät abmelden
+          </ElButton>
+        </div>
       </div>
     </template>
     <div v-for="row in rows" :key="row.title">

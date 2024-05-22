@@ -8,6 +8,7 @@ export const jobs = sqliteTable("jobs", {
   deviceId: text("device_id")
     .notNull()
     .references(() => devices.id),
+  deleted: int("deleted", { mode: "boolean" }).default(false),
 });
 
 export const insertJobSchema = createInsertSchema(jobs, {

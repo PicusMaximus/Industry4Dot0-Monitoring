@@ -1,12 +1,20 @@
 <script lang="ts" setup>
+import { FetchError } from "ofetch";
+
 const { execute: start, pending: startPending } = useAsync(
   async () => {
     await $fetch("/api/actions/start", { retry: false });
   },
   {
     onError: (error) => {
+      let message = "Fehler beim Starten";
+
+      if (error instanceof FetchError) {
+        message += ": " + error.data.message;
+      }
+
       ElNotification({
-        message: "Fehler beim Starten",
+        message,
         type: "error",
       });
     },

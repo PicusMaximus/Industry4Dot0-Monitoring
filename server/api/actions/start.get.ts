@@ -1,10 +1,20 @@
+import { jobOrderValid } from "~/server/utils/jobs";
+
 export default defineEventHandler(async (event) => {
-  const { devicePort } = useRuntimeConfig();
+  if (!jobOrderValid()) {
+    throw createError({
+      message: "Aktuelle Job-Reihenfolge enthält ungültige Jobs!",
+    });
+  }
+
+  const {
+    public: { devicePort },
+  } = useRuntimeConfig();
 
   const firstJob = db
     .select({
       deviceIp: devices.ip,
-      jobId: jobs.id
+      jobId: jobs.id,
     })
     .from(jobOrder)
     .innerJoin(jobs, eq(jobs.id, jobOrder.jobId))
@@ -27,16 +37,18 @@ export default defineEventHandler(async (event) => {
 
   console.log(`Starting job ${firstJob.jobId} on ${firstJob.deviceIp}`);
 
-
   try {
     await sendJobOrder(undefined, firstJob.deviceIp);
 
-    await $fetch(`http://${firstJob.deviceIp}:${devicePort}/api/device/startJob`, {
-      method: "POST",
-      body: {
-        id: firstJob.jobId,
-      }
-    });
+    await $fetch(
+      `http://${firstJob.deviceIp}:${devicePort}/api/device/startJob`,
+      {
+        method: "POST",
+        body: {
+          id: firstJob.jobId,
+        },
+      },
+    );
     console.log(`Start sent to ${firstJob.deviceIp}`);
   } catch (error) {
     throw createError({

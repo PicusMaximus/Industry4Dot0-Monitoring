@@ -1,5 +1,7 @@
 export default defineEventHandler(async (event) => {
-  const { devicePort } = useRuntimeConfig();
+  const {
+    public: { devicePort },
+  } = useRuntimeConfig();
 
   const devicesResult = db.select({ ip: devices.ip }).from(devices).all();
 

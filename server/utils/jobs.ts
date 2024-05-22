@@ -9,7 +9,7 @@ export const jobFiltersSchema = z.object({
 export type JobFilters = z.infer<typeof jobFiltersSchema>;
 
 export const getJobs = (filters: JobFilters) => {
-  const filterSQLs: SQL[] = [isNotNull(devices.ip)];
+  const filterSQLs: SQL[] = [isNotNull(devices.ip), eq(jobs.deleted, false)];
 
   if (filters.device) {
     filterSQLs.push(eq(jobs.deviceId, filters.device));
@@ -37,11 +37,13 @@ export const updateJobs = (deviceId: string, job: InsertJob[]) => {
         set: {
           name: sql`excluded.name`,
           deviceId: sql`excluded.device_id`,
+          deleted: false,
         },
       })
       .run();
 
-    tx.delete(jobs)
+    tx.update(jobs)
+      .set({ deleted: true })
       .where(
         and(
           eq(jobs.deviceId, deviceId),
@@ -52,7 +54,24 @@ export const updateJobs = (deviceId: string, job: InsertJob[]) => {
         ),
       )
       .run();
+
+    if (!jobOrderValid()) {
+      $fetch("/api/actions/emergency-stop");
+    }
   });
+};
+
+export const jobOrderValid = () => {
+  const deletedJobsInOrder = db
+    .select({
+      jobId: jobOrder.jobId,
+    })
+    .from(jobOrder)
+    .leftJoin(jobs, eq(jobs.id, jobOrder.jobId))
+    .where(eq(jobs.deleted, true))
+    .all();
+
+  return deletedJobsInOrder.length === 0;
 };
 
 export const jobOrderSchema = z.array(insertJobSchema.shape.id);
@@ -109,7 +128,9 @@ const getDeviceDetails = (order: JobOrder) => {
     .from(jobs)
     .leftJoin(devices, eq(jobs.deviceId, devices.id))
     .leftJoin(jobOrder, eq(jobs.id, jobOrder.jobId))
-    .where(and(or(...orFilters), isNotNull(devices.ip)))
+    .where(
+      and(or(...orFilters), isNotNull(devices.ip), eq(jobs.deleted, false)),
+    )
     .all() as { id: string; name: string; deviceIp: string }[];
 };
 
@@ -120,15 +141,18 @@ const getJobOrder = () => {
     })
     .from(jobOrder)
     .orderBy(jobOrder.order)
-    .all().map((row) => row.jobId);
-}
+    .all()
+    .map((row) => row.jobId);
+};
 
 export const sendJobOrder = async (order?: JobOrder, deviceIp?: string) => {
   if (!order) {
     order = getJobOrder();
   }
 
-  const { devicePort } = useRuntimeConfig();
+  const {
+    public: { devicePort },
+  } = useRuntimeConfig();
 
   const jobDetails = getDeviceDetails(order);
 

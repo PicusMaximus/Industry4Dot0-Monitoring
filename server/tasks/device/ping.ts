@@ -24,7 +24,9 @@ export default defineTask({
   },
 
   run({ payload }) {
-    const { devicePort } = useRuntimeConfig();
+    const {
+      public: { devicePort },
+    } = useRuntimeConfig();
 
     const now = Date.now();
 

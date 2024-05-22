@@ -10,7 +10,7 @@ definePageMeta({
 const route = useRoute();
 
 const { data: device, refresh: refreshDevice } = useFetch(
-  `/api/device/${route.params.id}`,
+  computed(() => `/api/device/${route.params.id}` as "/api/device/:id"),
 );
 
 // Query parameters for the API
@@ -65,22 +65,36 @@ useIntervalFn(refreshDevice, refreshInterval);
 useIntervalFn(refreshEvents, refreshInterval);
 
 useIntervalFn(refreshJobs, refreshInterval);
+
+const {
+  public: { devicePort },
+} = useRuntimeConfig();
+
+const interfaceUrl = computed(() => `http://${device.value?.ip}:${devicePort}`);
+
+const openInterface = () => {
+  console.log("Open interface", interfaceUrl.value);
+
+  window.open(interfaceUrl.value, "_blank")?.focus();
+};
 </script>
 
 <template>
-  <div class="flex flex-col gap-5 p-5">
+  <div class="flex flex-col gap-5 p-5" v-if="device">
     <DashboardSection title="Details">
       <DashboardCard
-        :name="device?.name"
-        :type="device?.type"
+        :name="device.name"
+        :type="device.type"
         :rows="[
-          { title: 'Name', value: device?.name ?? '' },
-          { title: 'Gerätetyp', value: device?.type.toUpperCase() ?? '' },
-          { title: 'IP-Adresse', value: device?.ip ?? '' },
-          { title: 'ID', value: device?.id },
+          { title: 'Name', value: device.name },
+          { title: 'Gerätetyp', value: device.type.toUpperCase() },
+          { title: 'IP-Adresse', value: device.ip ?? '-' },
+          { title: 'ID', value: device.id },
         ]"
         showLogout
+        showOpenInterface
         @logout="logout"
+        @openInterface="openInterface"
         :logoutDisabled="logoutPending"
       />
     </DashboardSection>
@@ -91,7 +105,12 @@ useIntervalFn(refreshJobs, refreshInterval);
           v-for="(job, index) in jobs"
           :key="index"
           :name="job.name"
-          :rows="[{ title: 'Position', value: String(job?.order + 1) }]"
+          :rows="[
+            {
+              title: 'Position',
+              value: String(job?.order ? job?.order + 1 : '-'),
+            },
+          ]"
         />
       </div>
       <div v-else class="flex justify-around">
@@ -110,4 +129,7 @@ useIntervalFn(refreshJobs, refreshInterval);
       </div>
     </DashboardSection>
   </div>
+  <template v-else>
+    <Loading />
+  </template>
 </template>
