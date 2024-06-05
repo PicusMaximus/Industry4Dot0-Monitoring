@@ -1,6 +1,10 @@
 <script setup>
 import draggable from "vuedraggable";
 
+useSeoMeta({
+  title: "Jobs",
+});
+
 const { data: devices, refresh: refreshDevice } = await useFetch("/api/device");
 const { data: jobs, refresh: refreshJobs } = await useFetch("/api/job");
 

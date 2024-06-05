@@ -31,7 +31,7 @@ export default defineNuxtConfig({
       tsConfig,
     },
     scheduledTasks: {
-      "* * * * *": ["device:ping"],
+      "* * * * *": ["jobs:refresh"],
     },
   },
   typescript: {
@@ -39,7 +39,10 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      devicePort: 3001,
+      devicePort: 3001, // Unter diesem Port versucht der Monitor, die Geräte zu erreichen
     },
+  },
+  devServer: {
+    port: 3000, // Port, unter dem der Monitor im Dev-Modus erreichbar ist
   },
 });

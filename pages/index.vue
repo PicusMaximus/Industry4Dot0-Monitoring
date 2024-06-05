@@ -2,16 +2,12 @@
 useSeoMeta({
   title: "Übersicht",
 });
-
-definePageMeta({
-  breadcrumb: "Übersicht",
-});
 </script>
 
 <template>
   <div class="flex flex-col gap-5 p-5">
-    <DashboardControlsSection />
-    <DashboardDevicesSection />
-    <DashboardJobsSection />
+    <OverviewControlsSection />
+    <OverviewDevicesSection />
+    <OverviewJobsSection />
   </div>
 </template>

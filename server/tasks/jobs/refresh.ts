@@ -19,8 +19,8 @@ const jobsResponseSchema = z
 
 export default defineTask({
   meta: {
-    name: "device:ping",
-    description: "Geräte anpingen die sich länger nicht gemeldet haben",
+    name: "jobs:refresh",
+    description: "Aktualisiert die Jobs aller angemeldeten Geräte",
   },
 
   run({ payload }) {

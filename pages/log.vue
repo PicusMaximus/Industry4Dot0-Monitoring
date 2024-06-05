@@ -3,10 +3,6 @@ useSeoMeta({
   title: "Ereignisse",
 });
 
-definePageMeta({
-  breadcrumb: "Ereignisse",
-});
-
 const timeShortcuts = [
   {
     text: "Today",

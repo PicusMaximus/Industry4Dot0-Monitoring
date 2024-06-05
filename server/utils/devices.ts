@@ -1,6 +1,6 @@
 import { getTableColumns } from "drizzle-orm";
 import { type InsertDevice } from "../database/schemas/devices";
-import { InsertEvent } from "../database/schemas/events";
+import { type InsertEvent } from "../database/schemas/events";
 
 export const getDeviceById = (id: string) => {
   return (

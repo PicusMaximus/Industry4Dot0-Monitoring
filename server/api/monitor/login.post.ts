@@ -18,7 +18,7 @@ export default defineEventHandler<
 
   insertDevice(newDevice);
 
-  runTask("device:ping");
+  runTask("jobs:refresh");
 
   console.log({ newDevice, devicePort });
 });
