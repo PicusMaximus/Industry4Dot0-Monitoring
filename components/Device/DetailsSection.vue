@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const router = useRouter();
 const route = useRoute();
 
 const { data: device, refresh: refreshDevice } = useFetch(
@@ -15,6 +16,8 @@ const { execute: logout, pending: logoutPending } = useAsync(
         id,
       },
     });
+
+    await router.push("/");
   },
   {
     onError: (error) => {
