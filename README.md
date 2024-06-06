@@ -209,3 +209,6 @@ Mehr Informationen:
   - Die Anpassung macht nur Sinn wenn die Geräte die Events senden.
 - [ ] Eventlog Einträge limitieren
   - Aktuell werden alle Events gerendert/ausgelesen
+- [ ] Entfernen von Jobs aus der Jobreihenfolge auch an den Geräten
+  - Aktuell kann der nächste Job für einen Job bei den Geräten nur zu einem anderen Job geändert, aber nicht entfernt werden.
+- [ ] Möglichkeit die Produktionslinie zu pausieren
