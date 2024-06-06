@@ -2,6 +2,15 @@ import { createResolver } from "nuxt/kit";
 
 const resolver = createResolver(import.meta.url);
 
+const tsConfig = {
+  compilerOptions: {
+    noUncheckedIndexedAccess: true,
+    noImplicitAny: true,
+    noImplicitThis: true,
+    noEmit: true,
+  },
+};
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -15,18 +24,25 @@ export default defineNuxtConfig({
   },
   nitro: {
     experimental: {
-      openAPI: true,
+      tasks: true,
     },
     errorHandler: resolver.resolve("server/error.ts"),
+    typescript: {
+      tsConfig,
+    },
+    scheduledTasks: {
+      "* * * * *": ["jobs:refresh"],
+    },
   },
   typescript: {
-    strict: true,
-    tsConfig: {
-      compilerOptions: {
-        noUncheckedIndexedAccess: true,
-        noImplicitAny: true,
-        noImplicitThis: true,
-      },
+    tsConfig,
+  },
+  runtimeConfig: {
+    public: {
+      devicePort: 3000, // Unter diesem Port versucht der Monitor, die Geräte zu erreichen
     },
+  },
+  devServer: {
+    port: 3000, // Port, unter dem der Monitor im Dev-Modus erreichbar ist
   },
 });

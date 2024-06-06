@@ -1,0 +1,1 @@
+ALTER TABLE jobs ADD `deleted` integer DEFAULT false;

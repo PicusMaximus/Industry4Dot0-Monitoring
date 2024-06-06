@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { SelectDevice } from "~/server/database/schemas/devices";
 
 const paramsSchema = insertDeviceSchema.pick({
   id: true,
@@ -9,18 +8,16 @@ export default defineEventHandler<
   {
     routerParams: z.infer<typeof paramsSchema>;
   },
-  Promise<SelectDevice>
+  Promise<ReturnType<typeof getDeviceById>>
 >(async (event) => {
   const { id } = await getValidatedRouterParams(event, paramsSchema.parse);
 
-  const device = (
-    await db.select().from(devices).where(eq(devices.id, id)).limit(1)
-  )[0];
+  const device = getDeviceById(id);
 
   if (!device) {
     throw createError({
       message: "Device not found",
-      status: 404,
+      statusCode: 404,
     });
   }
 
