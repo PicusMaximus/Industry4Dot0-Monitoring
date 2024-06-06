@@ -20,6 +20,7 @@
   ```
   http://localhost:3000
   ```
+  > **Hinweis:** Die Ports vom Monitor und den Geräten können in der `nuxt.config.ts` angepasst werden.
 
 ## Befehle
 
