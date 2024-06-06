@@ -3,7 +3,11 @@ export const emergencyStop = async () => {
     public: { devicePort },
   } = useRuntimeConfig();
 
-  const devicesResult = db.select({ ip: devices.ip }).from(devices).all();
+  const devicesResult = db
+    .select({ ip: devices.ip })
+    .from(devices)
+    .where(isNotNull(devices.ip))
+    .all();
 
   return Promise.all(
     devicesResult.map(async (device) => {
@@ -16,8 +20,10 @@ export const emergencyStop = async () => {
         });
         console.log(`Emergency-Stop sent to ${device.ip}`);
       } catch (error) {
+        console.log(`Emergency-Stop failed for ${device.ip}`);
+
         throw createError({
-          message: "Emergency-Stop fehlgeschlagen!",
+          message: `Emergency-Stop fehlgeschlagen! (${device.ip})`,
           cause: error,
         });
       }

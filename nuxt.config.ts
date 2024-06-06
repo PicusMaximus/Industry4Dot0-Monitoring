@@ -39,7 +39,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      devicePort: 3001, // Unter diesem Port versucht der Monitor, die Geräte zu erreichen
+      devicePort: 3000, // Unter diesem Port versucht der Monitor, die Geräte zu erreichen
     },
   },
   devServer: {
